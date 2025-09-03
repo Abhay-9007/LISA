@@ -42,17 +42,17 @@ bad_word = ["mf","fuck","nigga","hoe","bitch","dog","shit","fuck you","randi","m
 
 def model(text):
     # 📢 Speak
-    def speak(text):
-        try:
-            tts = gTTS(text=text, lang='en')
-            tts.save("response.mp3")
-            pygame.mixer.music.load("response.mp3")
-            pygame.mixer.music.play()
-            while pygame.mixer.music.get_busy():
-                pass
-            os.remove("response.mp3")
-        except Exception as e:
-            print(f"Error: {e}")
+    # def speak(text):
+    #     try:
+    #         tts = gTTS(text=text, lang='en')
+    #         tts.save("response.mp3")
+    #         #pygame.mixer.music.load("response.mp3")
+    #         #pygame.mixer.music.play()
+    #         while pygame.mixer.music.get_busy():
+    #             pass
+    #         os.remove("response.mp3")
+    #     except Exception as e:
+    #         print(f"Error: {e}")
 
     # 👋 Greet
     def greet():
