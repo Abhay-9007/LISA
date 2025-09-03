@@ -6,7 +6,17 @@ import random
 import sys
 import speech_recognition as sr
 from gtts import gTTS
-import pygame
+import os
+
+# Only load pygame locally, not on Railway
+if not os.environ.get("RAILWAY_ENVIRONMENT"):
+    try:
+        import pygame
+        pygame.init()
+        pygame.mixer.init()
+    except ImportError:
+        pass
+        
 import os
 from datetime import date
 import sqlite3
@@ -14,7 +24,6 @@ import sqlite3
 # 🎤 Setup
 recog = sr.Recognizer()
 mic = sr.Microphone()
-pygame.mixer.init()
 
 # 📂 Database Setup
 conn = sqlite3.connect("assistant.db", check_same_thread=False)
