@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LISA.ai</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #b2b5ff;
+        }
+
+        .chat-container {
+            width: 100%;
+            max-width: 600px;
+            height: 80vh;
+            max-height: 700px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background-color: #000000;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .chat-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            line-height: 1.4;
+        }
+
+        .user-message {
+            background-color: #0084ff;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .bot-message {
+            background-color: #00a403;
+            color: #ffffff;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .timestamp {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background-color: #000000;
+            border-top: 1px solid #ddd;
+        }
+
+        #userInput {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #0000ff;
+            border-radius: 20px;
+            outline: none;
+            font-size: 1em;
+        }
+
+        #sendButton {
+            margin-left: 10px;
+            padding: 10px 20px;
+            background-color: #0084ff;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        #sendButton:hover {
+            background-color: #005fbe;
+        }
+
+        @media (max-width: 480px) {
+            .chat-container {
+                height: 100vh;
+                border-radius: 0;
+            }
+
+            .chat-header {
+                font-size: 1em;
+                padding: 10px;
+            }
+
+            .chat-body {
+                padding: 10px;
+            }
+
+            .chat-input {
+                padding: 10px;
+            }
+
+            #userInput {
+                font-size: 0.9em;
+            }
+
+            #sendButton {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">LISA.ai</div>
+        <div class="chat-body" id="chatBody"></div>
+        <div class="chat-input">
+            <input type="text" id="userInput" placeholder="Type your message..." autocomplete="off">
+            <!-- ✅ Fix: button is type="button", not submit -->
+            <button id="sendButton" type="button">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const chatBody = document.getElementById('chatBody');
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
+
+        function addMessage(content, isUser) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', isUser ? 'user-message' : 'bot-message');
+            messageDiv.textContent = content;
+
+            const timestamp = document.createElement('div');
+            timestamp.classList.add('timestamp');
+            timestamp.textContent = new Date().toLocaleTimeString();
+
+            const wrapper = document.createElement('div');
+            wrapper.style.display = 'flex';
+            wrapper.style.flexDirection = 'column';
+            wrapper.style.alignItems = isUser ? 'flex-end' : 'flex-start';
+            wrapper.appendChild(messageDiv);
+            wrapper.appendChild(timestamp);
+
+            chatBody.appendChild(wrapper);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        async function processInput(input) {
+            try {
+                const response = await fetch('http://localhost:5000/process', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ input: input }),
+                });
+                const data = await response.json();
+                return data.output;
+            } catch (error) {
+                console.error('Error:', error);
+                return 'Error: Could not process input';
+            }
+        }
+
+        async function handleSend(event) {
+            if (event) event.preventDefault(); // Prevent any default action
+            const input = userInput.value.trim();
+            if (input) {
+                addMessage(input, true);
+                const response = await processInput(input);
+                addMessage(response, false);
+                userInput.value = '';
+            }
+        }
+
+        sendButton.addEventListener('click', handleSend);
+
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleSend(e);
+            }
+        });
+
+        // Focus input on page load
+        userInput.focus();
+    </script>
+</body>
+</html>
