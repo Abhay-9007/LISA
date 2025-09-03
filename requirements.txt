@@ -2,5 +2,4 @@ flask
 flask-cors
 gunicorn
 gtts
-speechrecognition
-sqlite3-binary
+SpeechRecognition
