@@ -1,6 +1,5 @@
 flask
 flask-cors
-gTTS
-pygame
-SpeechRecognition
-pyaudio
+gunicorn
+gtts
+speechrecognition
