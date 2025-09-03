@@ -42,7 +42,8 @@ bad_word = ["mf","fuck","nigga","hoe","bitch","dog","shit","fuck you","randi","m
 
 def model(text):
     # 📢 Speak
-    # def speak(text):
+     def speak(text):
+         pass
     #     try:
     #         tts = gTTS(text=text, lang='en')
     #         tts.save("response.mp3")
