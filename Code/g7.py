@@ -15,7 +15,8 @@ pygame.mixer.init()
 
 lf = ["remind.txt"]
 wanted = ['gate.env','daily.env','mid.env','file','day','weekly','monthly','normal','daily', 'week', 'month', 'other', 'general','to','remind','me','reminder','kill','try','about','solve','solving','calculate','calculation','open','insta','instagram','yt','youtube','google','chatgtp','gtp','chat','search','browse','give','display','print','show','say','speek','task','tasks','note','notes','add', 'date', 'time', 'i love you', 'addn', 'addt', 'count', 'search', 'open', 'browse', 'play', 'solve', '', 'updates', 'hi', 'hello', 'hey', 'wassup', 'mf', 'fuck', 'nigga', 'hoe', 'bitch', 'dog', 'shit', 'fuck you', 'randi', 'motherfucker', 'bye', 'goodbye', 'see you later', 'see you', 'see you around', 'quit', 'exit', 'q', 'search', 'browse', 'google', 'delete', 'remove', 'pop', 'clear', 'wipe', 'delete all', 'remove all', 'clear all', 'wipe it']
-bad_word = ["mf","fuck","nigga","hoe","bitch","dog","shit","fuck you","randi","motherfucker"]
+bad_word = ["mf","fuck","nigga","hoe","bitch","dog","shit","fuck you","hundin","motherfucker"]
+
 def model1(user_input):
 
     def greet():
@@ -99,10 +100,12 @@ def model1(user_input):
         return out
     
     def open_video(url):
-        webbrowser.get("open -a 'Brave Browser' %s").open(url)   
+        webbrowser.get("open -a 'Brave Browser' %s").open(url) 
+        
     def print_data(l1):
         for i in l1:
             print(i)
+            
     def xxx(input='general'):
         options = ['daily', 'week', 'month', 'other', 'general',]
         if input not in options:
@@ -134,22 +137,25 @@ def model1(user_input):
             return "Invalid Option."
         if not y:
             return "done"
+        
         f = open("remind.txt", "a+")
         f.seek(0)
-        data = f.readlines()
+        remind_data = f.readlines()
         f.close()
         f = open("remind.txt", "w")
-        if not data:
+        
+        if not remind_data:
             return "Empty"
         
-        for i in range(len(data)):
-            if data[i].startswith("["+x+"]"):
-                data[i] = data[i].strip() + ':'+y + "\n"
+        for i in range(len(remind_data)):
+            if remind_data[i].startswith("["+x+"]"):
+                remind_data[i] = remind_data[i].strip() + ':'+y + "\n"
                 f.seek(0)
-                f.writelines(data)
+                f.writelines(remind_data)
                 return y + " Added in "+ x + " Section."
         
-        return data
+        return remind_data
+    
     def open_file(file_name):
         try:
             f = open(file_name, 'r')
@@ -158,15 +164,18 @@ def model1(user_input):
         except: # noqa: E722
             return "File not found."
         return content
-    def generateCommand(x):
+    
+    def generateCommand(x,con):
         if x is None:
             return "Nigga, what the fuck you want me to do?"
+        
         command = []
-        con = x
-        if "'" in x:
-            con = x.split("'")[1]
-        elif '"' in x:
-            con = x.split('"')[1]
+        if con is None:
+            con = x
+            if "'" in x:
+                con = x.split("'")[1]
+            elif '"' in x:
+                con = x.split('"')[1]
         #print(con)         
         x = x.lower().strip()    
         x = x.split(" ")
@@ -181,6 +190,7 @@ def model1(user_input):
                 command.append(i) 
         command = " ".join(command)
         #print("this is the number :", num)
+        #print(con)
         return process_command(command, con, num)
 
     def process_command(command, con, num):
@@ -213,6 +223,8 @@ def model1(user_input):
             return open_file(con)
         
         elif 'pop' in command or 'delete' in command or 'del' in command:
+            if lf[0] == "remind.txt":
+                return "Don't touch the Shit you can't Handle..."
             f = open(lf[0], "r")
             f.seek(0)
             data = f.readlines()
@@ -427,12 +439,16 @@ def model1(user_input):
         else:
             return None
         
-    if user_input in ['0','1','2']:
-        ans = generateCommand(get_inst(user_input))
+    if user_input[0] in ['0','1','2'] and len(user_input.strip()) != 1:
+        ans = generateCommand(get_inst(user_input[0]),user_input[2:])
+    elif user_input[0] in ['0','1','2']:
+        ans = generateCommand(get_inst(user_input[0]),None)
     else:
-        ans = generateCommand(user_input)  
-    #print("Last :",last_intr)
-    if ans not in ["Oops", "Sorry", "Hell No"] and user_input not in ['0','1','2']:
+        ans = generateCommand(user_input,None)
+    
+    print("Last Instructions :",last_intr)
+    
+    if ans not in ["Oops", "Sorry", "Hell No"] and user_input[0] not in ['0','1','2']:
         inst_manager(user_input)
 
     return ans
