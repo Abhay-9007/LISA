@@ -1,4 +1,4 @@
-# It is complete if i only integrate speaking and implement proper backend in it                                8th Augut 2025
+# Have to integrate Backend for this                                                            8th Augut 2025
 import webbrowser
 import datetime
 import random
