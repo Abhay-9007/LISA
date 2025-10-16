@@ -411,17 +411,14 @@ def model1(user_input):
         with open("itr.txt", 'r') as f:
             lines = f.readlines()
             for line in lines:
-                dec = decryption(line.strip())  # strip removes \n safely
+                dec = decryption(line.strip())  
                 data2.append(dec)
-                #print("-----", data2)
         return data2
 
     last_intr = get_file() 
 
     def inst_manager(input):
         if input not in last_intr and input not in ['0','1','2']:
-            # print("In here..".center(150,'-'))
-            # print(type(last_intr))
             last_intr.append(input)
             if len(last_intr) > 3:
                 last_intr.pop(0)
@@ -429,7 +426,6 @@ def model1(user_input):
         return None
 
     def get_inst(input):
-        #print(input)
         if input == '0':
             return last_intr[-1]
         elif input == '1':
