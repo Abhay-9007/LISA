@@ -108,7 +108,7 @@ if __name__ == "__main__":
             continue
         else:
         
-            ans = model1(user_input)   # This is Model to generate Output...
+            ans = model1(user_input)   # This to generate Output...
             
             print("LISA:",ans)
             speak(ans)
