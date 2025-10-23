@@ -78,7 +78,7 @@ def model1(user_input):
         out = ""
         for i in inp:
             if i in ('"', "'"):
-                out += i  # keep quotes
+                out += i  
             else:
                 out += chr(ord(i) + val)
             val += 1
@@ -90,12 +90,12 @@ def model1(user_input):
         out = ""
         for i in inp:
             if i in ('"', "'"):
-                out += i  # keep quotes
+                out += i  
             else:
                 try:
                     out += chr(ord(i) - val)
                 except ValueError:
-                    out += "?"  # fallback for weird chars
+                    out += "?"  
             val += 1
         return out
     
