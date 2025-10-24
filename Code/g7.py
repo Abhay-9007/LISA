@@ -175,11 +175,9 @@ def model1(user_input):
             if "'" in x:
                 con = x.split("'")[1]
             elif '"' in x:
-                con = x.split('"')[1]
-        #print(con)         
+                con = x.split('"')[1] 
         x = x.lower().strip()    
         x = x.split(" ")
-        #print(x)
         num = -1
         for i in x:
             try:
@@ -189,8 +187,6 @@ def model1(user_input):
             if i in wanted and i != "":
                 command.append(i) 
         command = " ".join(command)
-        #print("this is the number :", num)
-        #print(con)
         return process_command(command, con, num)
 
     def process_command(command, con, num):
