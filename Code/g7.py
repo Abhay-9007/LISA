@@ -299,7 +299,7 @@ def model1(user_input):
                 f = open("notes.txt", "r+")
                 lf[0] = "notes.txt"
                 f.seek(0)
-                return f.read() # decription(f.read())
+                return f.read()
             
             else:
                 return 'Sorry'
