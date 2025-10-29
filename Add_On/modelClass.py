@@ -1,3 +1,4 @@
+#This is Model Class and here work is on progress....                                                         26th Oct 2025
 class ModelResponse():
     def __init__(self, userInput: str):
         self.userinput = userInput
