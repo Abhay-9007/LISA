@@ -52,7 +52,7 @@ class userInput():
         for i in userText:
             try:
                 num = int(i)
-            except: # noqa: E722
+            except:
                 pass
         return num
 
