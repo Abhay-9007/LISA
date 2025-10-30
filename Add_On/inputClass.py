@@ -1,5 +1,5 @@
 class userInput():
-    # "Abhay is a Good Boy" Nigga shut up say this 69 times
+    # "Abhay is a Good Boy" Nigga shut up say this 69 times....
     wanted = ['gate.env','daily.env','mid.env','file','day','weekly','monthly','normal','daily', 'week', 'month', 'other', 'general','to','remind','me','reminder','kill','try','about','solve','solving','calculate','calculation','open','insta','instagram','yt','youtube','google','chatgtp','gtp','chat','search','browse','give','display','print','show','say','speek','task','tasks','note','notes','add', 'date', 'time', 'i love you', 'addn', 'addt', 'count', 'search', 'open', 'browse', 'play', 'solve', '', 'updates', 'hi', 'hello', 'hey', 'wassup', 'mf', 'fuck', 'nigga', 'hoe', 'bitch', 'dog', 'shit', 'fuck you', 'randi', 'motherfucker', 'bye', 'goodbye', 'see you later', 'see you', 'see you around', 'quit', 'exit', 'q', 'search', 'browse', 'google', 'delete', 'remove', 'pop', 'clear', 'wipe', 'delete all', 'remove all', 'clear all', 'wipe it']
     greetings = ['hi', 'hello', 'hey', 'wassup']
     farewells = ['bye', 'goodbye', 'see you later', 'see you', 'see you around', 'quit', 'exit', 'q']
