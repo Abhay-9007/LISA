@@ -30,7 +30,7 @@ class userInput():
         print("Is Digit       : ", self.num)
         print("User Mood      : ", self.userMood)
         print("-------------------------------------------------------------------------------------------",end="")
-        print("\033[0m") #This is to reset the color
+        print("\033[0m") #This is to reset the color...
         return None
     
     def getCommand(self, userText: str) -> list:
