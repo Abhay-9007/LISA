@@ -1,4 +1,5 @@
-# Have to integrate Backend for this code                                                            8th Augut 2025
+# It is complete if i only integrate speaking and implement proper backend in it                                8th Augut 2025
+# Have to implement Backend For it...
 import webbrowser
 import datetime
 import random
@@ -13,12 +14,13 @@ recog = sr.Recognizer()              # for listening audio
 mic = sr.Microphone()                # for using microphone
 pygame.mixer.init()
 
-lf = ["remind.txt"]                  # this is last file opened...
-wanted = ['gate.env','daily.env','mid.env','file','day','weekly','monthly','normal','daily', 'week', 'month', 'other', 'general','to','remind','me','reminder','kill','try','about','solve','solving','calculate','calculation','open','insta','instagram','yt','youtube','google','chatgtp','gtp','chat','search','browse','give','display','print','show','say','speek','task','tasks','note','notes','add', 'date', 'time', 'i love you', 'addn', 'addt', 'count', 'search', 'open', 'browse', 'play', 'solve', '', 'updates', 'hi', 'hello', 'hey', 'wassup', 'mf', 'fuck', 'nigga', 'hoe', 'bitch', 'dog', 'shit', 'fuck you', 'randi', 'motherfucker', 'bye', 'goodbye', 'see you later', 'see you', 'see you around', 'quit', 'exit', 'q', 'search', 'browse', 'google', 'delete', 'remove', 'pop', 'clear', 'wipe', 'delete all', 'remove all', 'clear all', 'wipe it']
-bad_word = ['''All the Bad words must be hare''']
+lf = ["remind.txt"]
+wanted = ['monolog','gate.env','daily.env','mid.env','file','day','weekly','monthly','normal','daily', 'week', 'month', 'other', 'general','to','remind','me','reminder','kill','try','about','solve','solving','calculate','calculation','open','insta','instagram','yt','youtube','google','chatgtp','gtp','chat','search','browse','give','display','print','show','say','speek','task','tasks','note','notes','add', 'date', 'time', 'i love you', 'addn', 'addt', 'count', 'search', 'open', 'browse', 'play', 'solve', '', 'updates', 'hi', 'hello', 'hey', 'wassup', 'mf', 'fuck', 'nigga', 'hoe', 'bitch', 'dog', 'shit', 'fuck you', 'randi', 'motherfucker', 'bye', 'goodbye', 'see you later', 'see you', 'see you around', 'quit', 'exit', 'q', 'search', 'browse', 'google', 'delete', 'remove', 'pop', 'clear', 'wipe', 'delete all', 'remove all', 'clear all', 'wipe it']
+bad_word = ["mf","fuck","nigga","hoe","bitch","dog","shit","fuck you","hundin","motherfucker"]
 
 def model1(user_input):
 
+    
     def greet():
         greetings = [
             "Hello! How can I help you today?",
@@ -78,7 +80,7 @@ def model1(user_input):
         out = ""
         for i in inp:
             if i in ('"', "'"):
-                out += i  
+                out += i  # keep quotes
             else:
                 out += chr(ord(i) + val)
             val += 1
@@ -90,12 +92,12 @@ def model1(user_input):
         out = ""
         for i in inp:
             if i in ('"', "'"):
-                out += i  
+                out += i  # keep quotes
             else:
                 try:
                     out += chr(ord(i) - val)
                 except ValueError:
-                    out += "?"  
+                    out += "?"  # fallback for weird chars
             val += 1
         return out
     
@@ -175,9 +177,11 @@ def model1(user_input):
             if "'" in x:
                 con = x.split("'")[1]
             elif '"' in x:
-                con = x.split('"')[1] 
+                con = x.split('"')[1]
+        #print(con)         
         x = x.lower().strip()    
         x = x.split(" ")
+        #print(x)
         num = -1
         for i in x:
             try:
@@ -187,6 +191,8 @@ def model1(user_input):
             if i in wanted and i != "":
                 command.append(i) 
         command = " ".join(command)
+        #print("this is the number :", num)
+        #print(con)
         return process_command(command, con, num)
 
     def process_command(command, con, num):
@@ -299,7 +305,7 @@ def model1(user_input):
                 f = open("notes.txt", "r+")
                 lf[0] = "notes.txt"
                 f.seek(0)
-                return f.read()
+                return f.read() # decription(f.read())
             
             else:
                 return 'Sorry'
@@ -342,7 +348,24 @@ def model1(user_input):
         elif "kill" in command or "bye" in command or "goodbye" in command or "see you later" in command or "see you" in command or "see you around" in command or "quit" in command or "exit" in command or "q" in command:
             put_file(last_intr)
             exit_assistant()
+        
+        elif 'monolog' in command:
+            speak("Monolog mode on.")
+            f = open("monolog.txt", "a+")
+            todayDate = datetime.date.today()
+            f.write(f"\n--- {todayDate} ---\n")
+            while True:
+                toIn = input(":-")
+                if toIn.lower() in ["exit monolog", "stop monolog", "quit monolog","q","kill"]:
+                    speak("Monolog mode off.")
+                    f.close()
+                    break
+                else:
+                    f.write(toIn + "\n")
             
+            f.close()
+            
+        
         elif "open" in command:
             # print(command)
             # print(con)
@@ -407,14 +430,17 @@ def model1(user_input):
         with open("itr.txt", 'r') as f:
             lines = f.readlines()
             for line in lines:
-                dec = decryption(line.strip())  
+                dec = decryption(line.strip())  # strip removes \n safely
                 data2.append(dec)
+                #print("-----", data2)
         return data2
 
     last_intr = get_file() 
 
     def inst_manager(input):
         if input not in last_intr and input not in ['0','1','2']:
+            # print("In here..".center(150,'-'))
+            # print(type(last_intr))
             last_intr.append(input)
             if len(last_intr) > 3:
                 last_intr.pop(0)
@@ -422,6 +448,7 @@ def model1(user_input):
         return None
 
     def get_inst(input):
+        #print(input)
         if input == '0':
             return last_intr[-1]
         elif input == '1':
@@ -438,7 +465,7 @@ def model1(user_input):
     else:
         ans = generateCommand(user_input,None)
     
-    print("Last Instructions :",last_intr)
+    #print("Last Instructions :",last_intr)
     
     if ans not in ["Oops", "Sorry", "Hell No"] and user_input[0] not in ['0','1','2']:
         inst_manager(user_input)
