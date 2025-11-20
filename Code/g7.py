@@ -16,7 +16,7 @@ pygame.mixer.init()
 
 lf = ["remind.txt"]
 wanted = ['monolog','gate.env','daily.env','mid.env','file','day','weekly','monthly','normal','daily', 'week', 'month', 'other', 'general','to','remind','me','reminder','kill','try','about','solve','solving','calculate','calculation','open','insta','instagram','yt','youtube','google','chatgtp','gtp','chat','search','browse','give','display','print','show','say','speek','task','tasks','note','notes','add', 'date', 'time', 'i love you', 'addn', 'addt', 'count', 'search', 'open', 'browse', 'play', 'solve', '', 'updates', 'hi', 'hello', 'hey', 'wassup', 'mf', 'fuck', 'nigga', 'hoe', 'bitch', 'dog', 'shit', 'fuck you', 'randi', 'motherfucker', 'bye', 'goodbye', 'see you later', 'see you', 'see you around', 'quit', 'exit', 'q', 'search', 'browse', 'google', 'delete', 'remove', 'pop', 'clear', 'wipe', 'delete all', 'remove all', 'clear all', 'wipe it']
-bad_word = ["mf","fuck","nigga","hoe","bitch","dog","shit","fuck you","hundin","motherfucker"]
+bad_word = """This is the list of all the bad words"""
 
 def model1(user_input):
 
