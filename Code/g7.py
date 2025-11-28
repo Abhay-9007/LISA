@@ -97,7 +97,7 @@ def model1(user_input):
                 try:
                     out += chr(ord(i) - val)
                 except ValueError:
-                    out += "?"  # fallback for weird chars
+                    out += "?"  
             val += 1
         return out
     
