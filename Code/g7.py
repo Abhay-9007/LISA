@@ -1,5 +1,6 @@
 # It is complete if i only integrate speaking and implement proper backend in it                                8th Augut 2025
 # Have to implement Backend For it...
+# g8 and g9 are comming...
 import webbrowser
 import datetime
 import random
