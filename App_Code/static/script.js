@@ -1,0 +1,105 @@
+// Date is 6th Dec 2025, 
+// A desprate attempt to run LISA in my phone 24*7...
+// Thing I do for LOVE...
+
+// static/script.js
+const chat = document.getElementById("chat");
+const msgInput = document.getElementById("msg");
+const sendBtn = document.getElementById("send");
+const micBtn = document.getElementById("mic");
+const ttsToggle = document.getElementById("ttsToggle");
+
+function appendBubble(text, who="bot") {
+    const el = document.createElement("div");
+    el.classList.add("bubble", who === "user" ? "user" : "bot");
+    el.textContent = text;
+    chat.appendChild(el);
+    chat.scrollTop = chat.scrollHeight;
+}
+
+// send message to server API
+async function sendMessage(text) {
+    if (!text) return;
+    appendBubble(text, "user");
+    try {
+        const res = await fetch("/api", {
+            method: "POST",
+            headers: {"Content-Type":"application/json"},
+            body: JSON.stringify({ q: text })
+        });
+        const data = await res.json();
+        if (data && data.response) {
+            appendBubble(data.response, "bot");
+            if (ttsToggle.checked && "speechSynthesis" in window) {
+                speakText(data.response);
+            }
+        } else if (data && data.error) {
+            appendBubble("Error: " + data.error, "bot");
+        } else {
+            appendBubble("No response from server.", "bot");
+        }
+    } catch (e) {
+        appendBubble("Network error.", "bot");
+        console.error(e);
+    }
+}
+
+function speakText(text) {
+    try {
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = "en-US";
+        window.speechSynthesis.cancel(); // stop previous
+        window.speechSynthesis.speak(utter);
+    } catch (e) {
+        console.warn("TTS failed", e);
+    }
+}
+
+// UI events
+sendBtn.addEventListener("click", () => {
+    const t = msgInput.value.trim();
+    if (t === "") return;
+    msgInput.value = "";
+    sendMessage(t);
+});
+msgInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+        sendBtn.click();
+    }
+});
+
+// Voice input using Web Speech API
+let recognition;
+if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SR();
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onresult = (event) => {
+        const text = event.results[0][0].transcript;
+        msgInput.value = text;
+        sendMessage(text);
+    };
+    recognition.onerror = (e) => {
+        console.warn("Speech recognition error", e);
+    };
+} else {
+    recognition = null;
+}
+
+micBtn.addEventListener("click", () => {
+    if (!recognition) {
+        appendBubble("Voice not supported in this browser.", "bot");
+        return;
+    }
+    try {
+        recognition.start();
+    } catch (e) {
+        console.warn(e);
+    }
+});
+
+// Welcome message
+appendBubble("Welcome! Ask me anything. Try 'time', 'date', 'add reminder buy milk', or 'play relaxing music'.", "bot");
