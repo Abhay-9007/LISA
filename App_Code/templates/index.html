@@ -1,0 +1,222 @@
+<!-- templates/index.html
+
+# Date is 6th Dec 2025, 
+# A desprate attempt to run LISA in my phone 24*7...
+# Thing I do for LOVE...
+
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>LISA — Web Assistant</title>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+    :root{
+        --bg:#09090b;
+        --card:#111217;
+        --accent:#00d0ff;
+        --accent-2:#0077ff;
+        --muted:#9aa4b2;
+    }
+    *{box-sizing:border-box}
+    body{
+        margin:0;
+        font-family: "Poppins", system-ui, sans-serif;
+        background: radial-gradient(1200px 600px at 10% 10%, rgba(0,150,255,0.03), transparent),
+                    radial-gradient(800px 400px at 90% 90%, rgba(0,200,255,0.02), transparent),
+                    var(--bg);
+        color:#e6eef6;
+        -webkit-font-smoothing:antialiased;
+        -moz-osx-font-smoothing:grayscale;
+        min-height:100vh;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        padding:20px;
+    }
+
+    .app {
+        width:100%;
+        max-width:880px;
+        height:90vh;
+        display:grid;
+        grid-template-columns: 1fr 360px;
+        gap:20px;
+    }
+
+    /* left - chat area */
+    .panel {
+        background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+        border-radius:16px;
+        padding:18px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 30px rgba(0,150,255,0.04);
+        border: 1px solid rgba(0,150,255,0.06);
+        display:flex;
+        flex-direction:column;
+        min-height:0;
+    }
+
+    header.app-header {
+        display:flex;
+        align-items:center;
+        gap:12px;
+        margin-bottom:10px;
+    }
+    .logo {
+        width:44px;height:44px;border-radius:10px;
+        background:linear-gradient(45deg,var(--accent-2),var(--accent));
+        display:flex;align-items:center;justify-content:center;
+        box-shadow:0 6px 18px rgba(0,200,255,0.08), inset 0 -6px 18px rgba(255,255,255,0.02);
+        font-weight:700;color:#011627;
+        font-size:18px;
+    }
+    .title {font-size:18px;font-weight:600}
+    .subtitle{font-size:12px;color:var(--muted);margin-top:-2px}
+
+    .chat {
+        flex:1;
+        overflow:auto;
+        padding:10px;
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+        scrollbar-width:thin;
+    }
+
+    .bubble {
+        max-width:78%;
+        padding:12px 14px;
+        border-radius:12px;
+        line-height:1.4;
+        animation:pop .18s ease;
+        word-wrap:break-word;
+        box-shadow:0 6px 20px rgba(0,0,0,0.6);
+    }
+    @keyframes pop { from {opacity:0; transform: translateY(8px)} to {opacity:1; transform:none} }
+
+    .user { align-self:flex-end; background: linear-gradient(90deg,var(--accent-2),var(--accent)); color:#02192b; border-radius:12px 12px 6px 12px; }
+    .bot  { align-self:flex-start; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.04)); border-left:4px solid var(--accent); color:#e6eef6; }
+
+    .meta { font-size:11px; color:var(--muted); margin-top:6px; }
+
+    .compose {
+        margin-top:12px;
+        display:flex;
+        gap:10px;
+        align-items:center;
+    }
+    .input {
+        flex:1;
+        display:flex;
+        gap:8px;
+        align-items:center;
+    }
+    .input input {
+        width:100%;
+        padding:12px 14px;
+        border-radius:12px;
+        border:1px solid rgba(0,150,255,0.12);
+        background:#0b0b0f;
+        color:inherit;
+        outline:none;
+    }
+    .btn {
+        padding:10px 12px;border-radius:10px;border:0;cursor:pointer;
+        background:linear-gradient(90deg,var(--accent-2),var(--accent));
+        color:#021627;font-weight:600;
+    }
+    .mic {
+        background:#111218;border:1px solid rgba(255,255,255,0.03);
+        color:var(--accent); font-weight:700;
+    }
+
+    /* right panel */
+    .side {
+        display:flex;
+        flex-direction:column;
+        gap:12px;
+    }
+    .card {
+        background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.03));
+        border-radius:12px;padding:14px;border:1px solid rgba(0,150,255,0.05);
+    }
+    .toggle {display:flex;gap:8px;align-items:center;justify-content:space-between}
+    label.switch {position:relative; display:inline-block; width:46px; height:26px}
+    label.switch input{display:none}
+    label.switch .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#111;border-radius:26px;transition:.2s;border:1px solid rgba(255,255,255,0.04)}
+    label.switch .slider:before{position:absolute;content:"";height:20px;width:20px;left:3px;top:3px;background:white;border-radius:50%;transition:.2s}
+    label.switch input:checked + .slider{background:linear-gradient(90deg,var(--accent-2),var(--accent))}
+    label.switch input:checked + .slider:before{transform:translateX(20px)}
+
+    footer.note{font-size:12px;color:var(--muted);text-align:center;margin-top:6px}
+    @media (max-width:880px){
+        .app {grid-template-columns: 1fr; height:100vh}
+        .side {order:2}
+    }
+</style>
+</head>
+<body>
+    <div class="app">
+        <section class="panel">
+            <header class="app-header">
+                <div class="logo">L1</div>
+                <div>
+                    <div class="title">LISA • Web Assistant</div>
+                    <div class="subtitle">Dark neon • Voice + Chat • API mode</div>
+                </div>
+            </header>
+
+            <div id="chat" class="chat" aria-live="polite"></div>
+
+            <div class="compose">
+                <div class="input">
+                    <input id="msg" type="text" placeholder="Ask something... (try: time, date, add reminder ...)" autocomplete="off" />
+                </div>
+                <button id="send" class="btn">Send</button>
+                <button id="mic" class="btn mic">🎤</button>
+            </div>
+            <div class="meta" style="text-align:center;margin-top:8px;color:var(--muted)">Tip: Use the mic or type. Toggle TTS on the right.</div>
+        </section>
+
+        <aside class="side">
+            <div class="card">
+                <strong>Settings</strong>
+                <div style="height:8px"></div>
+                <div class="toggle">
+                    <div>
+                        <div style="font-size:13px">Text-to-Speech</div>
+                        <div style="font-size:12px;color:var(--muted)">Let the assistant speak responses</div>
+                    </div>
+                    <label class="switch">
+                        <input id="ttsToggle" type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="card">
+                <strong>API</strong>
+                <div style="margin-top:8px;font-size:13px;color:var(--muted)">
+                    You can call: <code>/api?q=hello</code><br/>or POST JSON {"q":"hello"} to <code>/api</code>.
+                </div>
+            </div>
+
+            <div class="card">
+                <strong>Files</strong>
+                <div style="margin-top:8px;font-size:13px;color:var(--muted)">
+                    Notes, tasks and reminders are stored on the server in <code>notes.txt</code>, <code>task.txt</code>, <code>remind.txt</code>.
+                </div>
+            </div>
+
+            <div class="card">
+                <footer class="note">go save plants. 🌱</footer>
+            </div>
+        </aside>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
