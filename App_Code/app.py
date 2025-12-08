@@ -1,7 +1,30 @@
 # Date is 6th Dec 2025, 
 # A desprate attempt to run LISA in my phone 24*7...
 # Thing I do for LOVE...
+'''
+---------------- Things to add in this Code. ---------------
+1. WebBrowsing is not working.
+2. Content selection of limited.
+3. Rreminders must be added.
+4. Monolog is not working.
+5. UI must be improved.
+6. Language is not as is coded.
+7. Make her responsis funny.
+8. Update Swear Function.
+9. More File added section for partition of new things.
+10. Use Classes to achive more effictive answer.
+11. Notes are not readable {might be encrypted.}
+12. integrate this code with my new code base.
 
+'''
+
+'''
+----------- NEW THINGS TO TRY --------------
+1. Add a stable database.
+2. use any type of AI to content selection, command prioritization, flexible Answers {Non robotic}.
+3. Add more API's.
+4. Use Animations in UI.
+'''
 # app.py
 from flask import Flask, request, render_template, jsonify
 import datetime
