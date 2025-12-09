@@ -15,7 +15,7 @@
 10. Use Classes to achive more effictive answer.
 11. Notes are not readable {might be encrypted.}
 12. integrate this code with my new code base.
-
+13. Try to sell if for real money...***
 '''
 
 '''
