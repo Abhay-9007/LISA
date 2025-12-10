@@ -16,6 +16,8 @@
 11. Notes are not readable {might be encrypted.}
 12. integrate this code with my new code base.
 13. Try to sell if for real money...***
+14. Make A file on which ChatGPT has the full access to read a nd write. {For using  versatile functoins.}{And this is soo cool}
+15. Make a log reminder file to log a real crazy thing to have.
 '''
 
 '''
