@@ -18,6 +18,8 @@
 13. Try to sell if for real money...***
 14. Make A file on which ChatGPT has the full access to read a nd write. {For using  versatile functoins.}{And this is soo cool}
 15. Make a log reminder file to log a real crazy thing to have.
+16. Money manager.
+17. better version of monolog.
 '''
 
 '''
