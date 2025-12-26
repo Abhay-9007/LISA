@@ -4,21 +4,21 @@
 # on 19 dec 2025 lisa is reconsidered...
 '''
 ---------------- Things to add in this Code. ---------------
-1. WebBrowsing is not working.
+1. WebBrowsing is not working.                -
 2. Content selection of limited.
-3. Rreminders must be added.
+3. Reminders must be added.                   -
 4. Monolog is not working.
 5. UI must be improved.
 6. Language is not as is coded.
 7. Make her responsis funny.
-8. Update Swear Function.
-9. More File added section for partition of new things.
+8. Update Swear Function.                     -
+9. More File added section for partition of new things.         -
 10. Use Classes to achive more effictive answer.
-11. Notes are not readable {might be encrypted.}
+11. Notes are not readable {might be encrypted.}                -
 12. integrate this code with my new code base.
 13. Try to sell if for real money...***
 14. Make A file on which ChatGPT has the full access to read a nd write. {For using  versatile functoins.}{And this is soo cool}
-15. Make a log reminder file to log a real crazy thing to have.
+15. Make a log reminder file to log a real crazy thing to have.     
 16. Money manager.
 17. better version of monolog.
 '''
