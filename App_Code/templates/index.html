@@ -5,6 +5,7 @@
 # Thing I do for LOVE...
 
 -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,14 +41,13 @@
 
     .app {
         width:100%;
-        max-width:880px;
+        max-width:1380px;   
         height:90vh;
         display:grid;
-        grid-template-columns: 1fr 360px;
+        grid-template-columns: 95vw 360px;
         gap:20px;
     }
 
-    /* left - chat area */
     .panel {
         background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
         border-radius:16px;
@@ -145,7 +145,7 @@
     }
     .toggle {display:flex;gap:8px;align-items:center;justify-content:space-between}
     label.switch {position:relative; display:inline-block; width:46px; height:26px}
-    label.switch input{display:none}
+    label.switch input{display:none;}
     label.switch .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#111;border-radius:26px;transition:.2s;border:1px solid rgba(255,255,255,0.04)}
     label.switch .slider:before{position:absolute;content:"";height:20px;width:20px;left:3px;top:3px;background:white;border-radius:50%;transition:.2s}
     label.switch input:checked + .slider{background:linear-gradient(90deg,var(--accent-2),var(--accent))}
@@ -162,59 +162,26 @@
     <div class="app">
         <section class="panel">
             <header class="app-header">
-                <div class="logo">L1</div>
+                <div class="logo">LISA</div>
                 <div>
                     <div class="title">LISA • Web Assistant</div>
-                    <div class="subtitle">Dark neon • Voice + Chat • API mode</div>
                 </div>
+                <label class="switch">
+                    <input id="ttsToggle" type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
             </header>
 
             <div id="chat" class="chat" aria-live="polite"></div>
 
             <div class="compose">
                 <div class="input">
-                    <input id="msg" type="text" placeholder="Ask something... (try: time, date, add reminder ...)" autocomplete="off" />
+                    <input id="msg" type="text" placeholder="Type Here..." autocomplete="off" />
                 </div>
                 <button id="send" class="btn">Send</button>
                 <button id="mic" class="btn mic">🎤</button>
             </div>
-            <div class="meta" style="text-align:center;margin-top:8px;color:var(--muted)">Tip: Use the mic or type. Toggle TTS on the right.</div>
         </section>
-
-        <aside class="side">
-            <div class="card">
-                <strong>Settings</strong>
-                <div style="height:8px"></div>
-                <div class="toggle">
-                    <div>
-                        <div style="font-size:13px">Text-to-Speech</div>
-                        <div style="font-size:12px;color:var(--muted)">Let the assistant speak responses</div>
-                    </div>
-                    <label class="switch">
-                        <input id="ttsToggle" type="checkbox" checked>
-                        <span class="slider"></span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="card">
-                <strong>API</strong>
-                <div style="margin-top:8px;font-size:13px;color:var(--muted)">
-                    You can call: <code>/api?q=hello</code><br/>or POST JSON {"q":"hello"} to <code>/api</code>.
-                </div>
-            </div>
-
-            <div class="card">
-                <strong>Files</strong>
-                <div style="margin-top:8px;font-size:13px;color:var(--muted)">
-                    Notes, tasks and reminders are stored on the server in <code>notes.txt</code>, <code>task.txt</code>, <code>remind.txt</code>.
-                </div>
-            </div>
-
-            <div class="card">
-                <footer class="note">go save plants. 🌱</footer>
-            </div>
-        </aside>
     </div>
 
     <script src="/static/script.js"></script>
