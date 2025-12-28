@@ -19,8 +19,10 @@ function appendBubble(text, who="bot") {
 
 // send message to server API
 async function sendMessage(text) {
+    console.log("Sending message:", text);
     if (!text) return;
     appendBubble(text, "user");
+    
     try {
         const res = await fetch("/api", {
             method: "POST",
@@ -28,6 +30,32 @@ async function sendMessage(text) {
             body: JSON.stringify({ q: text })
         });
         const data = await res.json();
+        // console.log(res);
+        // console.log(data);
+        if (data.response.includes("Searching")){
+            content = data.response.replace("Searching for", "").trim();
+            window.open("https://google.com/search?q="+ content, "_blank");
+        }
+        else if (data.response.includes("Playing")){
+            content = data.response.replace("Playing", "").trim();
+            window.open("https://www.youtube.com/results?search_query="+ content, "_blank");
+        }
+        else if (data.response.includes("Opening")){
+            if (data.response.includes("Instagram")){
+                window.open("https://www.instagram.com/", "_blank");
+                }
+                else if (data.response.includes("YouTube")){
+                window.open("https://www.youtube.com/", "_blank");
+            }
+            else if (data.response.includes("ChatGPT")){
+                window.open("https://www.chatgpt.com/", "_blank");
+            }
+            else{
+                content = data.response.replace("Opening", "").trim();
+                window.open("https://www."+content+".com/", "_blank");
+            }
+            
+        }
         if (data && data.response) {
             appendBubble(data.response, "bot");
             if (ttsToggle.checked && "speechSynthesis" in window) {
@@ -102,4 +130,5 @@ micBtn.addEventListener("click", () => {
 });
 
 // Welcome message
-appendBubble("Welcome! Ask me anything. Try 'time', 'date', 'add reminder buy milk', or 'play relaxing music'.", "bot");
+appendBubble("Hello, how can I help you?", "bot");
+
