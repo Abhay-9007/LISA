@@ -21,6 +21,8 @@
 15. Make a log reminder file to log a real crazy thing to have.     
 16. Money manager.
 17. better version of monolog.
+-> for improvement there should be a seperate page to manage my money manager and monolog feature.
+    as also it will contribute in my other projects in Web D.
 '''
 
 '''
