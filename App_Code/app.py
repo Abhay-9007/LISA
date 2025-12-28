@@ -32,6 +32,7 @@
 '''
 # app.py
 from flask import Flask, request, render_template, jsonify
+import webbrowser
 import datetime
 import random
 import os
@@ -42,10 +43,9 @@ app = Flask(__name__, static_folder="static", template_folder="templates")
 # -------------------------
 # Utility: safe file ensure
 # -------------------------
-
 def ensure_files():
     files_defaults = {
-        "remind.txt": "\n[daily]:\n[week]:\n[month]:\n[other]:\n[general]:\n",
+        "remind.txt": "",
         "notes.txt": "",
         "task.txt": "",
         "about.txt": "LISA 1.4 - Web assistant adapted by integration.",
@@ -61,9 +61,10 @@ ensure_files()
 # =========================
 # Adapted model1 (from file 2)
 # =========================
-wanted = ['monolog','gate.env','daily.env','mid.env','file','day','weekly','monthly','normal','daily', 'week', 'month', 'other', 'general','to','remind','me','reminder','kill','try','about','solve','solving','calculate','calculation','open','insta','instagram','yt','youtube','google','chatgtp','gtp','chat','search','browse','give','display','print','show','say','speek','task','tasks','note','notes','add', 'date', 'time', 'i love you', 'addn', 'addt', 'count', 'search', 'open', 'browse', 'play', 'solve', '', 'updates', 'hi', 'hello', 'hey', 'wassup', 'bye', 'goodbye', 'see you later', 'see you', 'see you around', 'quit', 'exit', 'q', 'search', 'browse', 'google', 'delete', 'remove', 'pop', 'clear', 'wipe', 'delete all', 'remove all', 'clear all', 'wipe it']
-bad_word = ["mf","fuck","nigga","hoe","bitch","dog","shit","fuck you","hundin","motherfucker"]
-
+wanted = ['monolog','gate.env','daily.env','mid.env','file','day','reminders','to','remind','me','reminder','kill','try','about','solve','solving','calculate','calculation','open','insta','instagram','yt','youtube','google','chatgtp','gtp','chat','search','browse','give','display','print','show','say','speek','task','tasks','note','notes','add', 'date', 'time', 'addn', 'addt', 'count', 'search', 'open', 'browse', 'play', 'solve', 'updates', 'hi', 'hello', 'hey', 'wassup', 'bye', 'goodbye', 'quit', 'exit', 'q', 'search', 'browse', 'google', 'delete', 'remove', 'pop', 'clear', 'wipe']
+bad_word = ["mf","fuck","nigga","hoe","bitch","dog","shit","fuckyou","hundin","motherfucker","pussy","asshole"]
+listRem = ["dump","personal","todo"]
+lastFile = "notes.txt"
 # Simple encryption / decryption used by original model
 def encryption(inp, val=1):
     if not inp:
@@ -76,6 +77,7 @@ def encryption(inp, val=1):
             out += chr(ord(i) + val)
         val += 1
     return out
+
 
 def decryption(inp, val=1):
     if not inp:
@@ -114,80 +116,157 @@ def model1(user_input):
     def swears():
         toSay= ["Please don't use offensive language.",
                 "That's rude. Let's keep it civil.",
-                "I won't respond to insults."]
+                "Chala ja BSDK",
+                "Not Funny.",
+                "That's rude.",
+                "Is that the line where i have to laugh??",
+                "Is that how you treat your mother??",
+                "This is how molested kids speak.",
+                "You better run Mother Fucker.",
+                "Nigga please...",
+                "That's mean...",
+                "You are a piece of shit.",
+                "I will Love to skin you alive.",
+                "That's not a proper way to speak.",
+                "I doubt your Upbringing"]
         return random.choice(toSay)
-
+    
+    def open_video(url):
+        webbrowser.get("open -a 'Brave Browser' %s").open(url) 
+        
     def days_remains():
         today = date.today()
         target = date(2026, 1, 1)
         dl = (target - today).days
-        ans = f"You have {dl} days left until {target.strftime('%B %d, %Y')}."
+        ans = f"You have {dl} days."
         return ans
 
     # file helpers
     def open_file(file_name):
         try:
             with open(file_name, 'r', encoding='utf-8') as f:
+                global lastFile
+                lastFile = file_name
                 return f.read()
         except Exception:
             return "File not found."
+    def divideRem(name):
+        name = name.lower().strip()
+        if name in listRem:
+            return f"Catagory of {name} already exists."
+        else:
+            with open("remind.txt","a") as f:
+                listRem.append(name)
+                f.write(f"[{name}]:\n")
+            return f"New catagory of {name} added."
 
-    def xxx(input_opt='general'):
-        options = ['daily', 'week', 'month', 'other', 'general']
-        if input_opt not in options:
-            return "Invalid option. Choose from: " + ", ".join(options)
+    def addRem(name,content):
+        name = name.lower().strip()
+        content = content.strip()
+        if name not in listRem:
+            return f"Catagory of {name} does not exists."
+        else:
+            with open("remind.txt","r+") as f:
+                data = f.readlines()
+                f.seek(0)
+                newData = []
+                for line in data:
+                    if line.startswith(f"[{name}]"):
+                        line = line.strip() + ':' + content + "\n"
+                    newData.append(line)
+                f.writelines(newData)
+            return f"Added to {name}."
+    
+    def getRem(name):
+        name = name.lower().strip()
+        if name not in listRem:
+            return f"Catagory of {name} does not exists."
+        else:
+            with open("remind.txt","r") as f:
+                data = f.readlines()
+                for line in data:
+                    if line.startswith(f"[{name}]"):
+                        reminders = line.split(':')[1:]
+                        if not reminders or reminders == ['\n']:
+                            return "No Reminders Found."
+                        ans = []
+                        count = 0
+                        for i in reminders:
+                            ans.append(f"{count}. {i.strip()}")
+                            count+=1
+                        return "\n".join(ans)
 
-        try:
-            with open("remind.txt", "r", encoding='utf-8') as f:
-                textd = f.readlines()
-        except Exception:
-            return "No reminders file."
 
-        if not textd:
-            return "Empty reminders."
+    def allRem():
+        with open("remind.txt","r") as f:
+            data = f.readlines()
+            ans = ""
+            for i in data:
+                line = i.split(":")
+                ans += str(line[0]).replace("[","").replace("]","").strip().capitalize() + " Reminders:\n"
+                count = 1
+                for rem in line[1:]:
+                    if rem == "" or rem.strip() == "":
+                        continue
+                    ans +=  f"{count} {rem.strip()}" + "\n"
+                    count += 1
+                ans += "\n"
+                
 
-        ans_ = []
-        for i in textd:
-            temp = i.split(':')
-            if temp[0] == "[" + input_opt + "]":
-                ans_ = temp[1:]
-                break
+            return ans.strip()
 
-        if not ans_:
-            return "No items in that section."
+    def removeRem(name, num):
+        name = name.lower().strip()
+        if name not in listRem:
+            return f"Catagory of {name} does not exists."
+        else:
+            with open("remind.txt","r+") as f:
+                data = f.readlines()
+                f.seek(0)
+                newData = []
+                for line in data:
+                    if line.startswith(f"[{name}]"):
+                        reminders = line.split(':')
+                        remList = reminders[1:]
+                        if num < 0 or num >= len(remList):
+                            return "Invalid reminder number."
+                        remList.pop(num)
+                        line = reminders[0] + ':' + ':'.join(remList) + "\n"
+                    newData.append(line)
+                f.writelines(newData)
+            return f"Removed reminder {num} from {name}."
 
-        f_ans = ""
-        count = 0
-        for i in ans_:
-            f_ans += f"{count}. {i.strip()}\n"
-            count+=1
-        return f_ans.strip()
+    def deleteRem(name):
+        name = name.lower().strip()
+        if name not in listRem:
+            return f"Catagory of {name} does not exists."
+        else:
+            with open("remind.txt","r+") as f:
+                data = f.readlines()
+                f.seek(0)
+                newData = []
+                for line in data:
+                    if not line.startswith(f"[{name}]"):
+                        newData.append(line)
+                f.writelines(newData)
+            listRem.remove(name)
+            return f"{name} Deleted."
 
-    def aaa(x,y):
-        if x not in ['daily', 'week', 'month', 'other', 'general']:
-            return "Invalid Option."
-        if not y:
-            return "done"
-
-        try:
-            with open("remind.txt", "r", encoding='utf-8') as f:
-                remind_data = f.readlines()
-        except Exception:
-            return "Reminders file missing."
-
-        updated = False
-        for i in range(len(remind_data)):
-            if remind_data[i].startswith("["+x+"]"):
-                remind_data[i] = remind_data[i].strip() + ':'+y + "\n"
-                updated = True
-                break
-
-        if not updated:
-            return "Could not add; format unexpected."
-
-        with open("remind.txt", "w", encoding='utf-8') as f:
-            f.writelines(remind_data)
-        return y + " added in "+ x + " section."
+    def emptyRem(name):
+        name = name.lower().strip()
+        if name not in listRem:
+            return f"Catagory of {name} does not exists."
+        else:
+            with open("remind.txt","r+") as f:
+                data = f.readlines()
+                f.seek(0)
+                newData = []
+                for line in data:
+                    if line.startswith(f"[{name}]"):
+                        line = f"[{name}]:\n"
+                    newData.append(line)
+                f.writelines(newData)
+            return f"Deleted all reminders from {name}."
 
     def generateCommand(x,con):
         if x is None:
@@ -199,6 +278,9 @@ def model1(user_input):
                 con = x.split("'")[1]
             elif '"' in x:
                 con = x.split('"')[1]
+        for i in con.split():
+            if i.lower() in bad_word:
+                return swears()
         x_proc = x.lower().strip().split()
         num = -1
         for i in x_proc:
@@ -206,76 +288,97 @@ def model1(user_input):
                 num = int(i)
             except Exception:
                 pass
-            if i in wanted and i != "":
+            if i in wanted and i != "" or i in listRem:
                 command.append(i)
         command = " ".join(command)
+        print("----------------------------------------------------------------------------")
+        print(f"|   The command is :    {command}\n|   The context is :    {con}\n|   The number  is :    {num}")
+        print("----------------------------------------------------------------------------")
         return process_command(command, con, num)
 
     def process_command(command, con, num):
+        global lastFile
         # Clear commands
         if 'clear' in command or "erase" in command:
             if 'notes' in command:
+                lastFile = "notes.txt"
                 with open("notes.txt","w",encoding='utf-8') as f:
                     f.write("")
                 return "Notes cleared."
             elif 'tasks' in command or 'task' in command:
+                lastFile = "task.txt"
                 with open("task.txt","w",encoding='utf-8') as f:
                     f.write("")
                 return "Tasks cleared."
-            elif 'remind' in command or 'reminder' in command:
-                with open("remind.txt","w",encoding='utf-8') as f:
-                    f.write("\n[daily]:\n[week]:\n[month]:\n[other]:\n[general]:\n")
-                return "Reminders cleared."
             else:
                 return "No specific file mentioned to clear."
 
         # File open
         elif 'open' in command and 'file' in command:
+            lastFile = con.replace("open","").replace("file","").strip()
             return open_file(con)
+
+        elif "reminder" in command or "remind" in command or "reminders" in command:
+            lastFile = "remind.txt"
+            if "add" in command:
+                for i in listRem:
+                    if i in command:
+                        return addRem(i, con)
+                return addRem("dump", con)
+            elif "give" in command or "show" in command or "print" in command or "display" in command:
+                for i in listRem:
+                    if i in command:
+                        return getRem(i)
+                return allRem()
+            elif 'remove' in command or 'delete' in command or 'pop' in command or 'clear' in command or 'erase' in command or 'wipe' in command:
+                if 'all' in command:
+                    for i in listRem:
+                        if i in command:
+                            return deleteRem(i)
+                    return "Specify which reminders to clear."
+                else:
+                    for i in listRem:
+                        if i in command:
+                            if num == -1:
+                                return "Specify which reminder number to remove."
+                            return removeRem(i, num)
+                    return "Specify which reminders to remove from."
+            elif "me" in command:
+                return allRem()
+            elif "me" in command and "to" in command:
+                return addRem("dump",con)
+            else:
+                return "What do you want to do with reminders?"
 
         # pop/delete
         elif 'pop' in command or 'delete' in command or 'del' in command:
             # basic handling for task/notes
-            target = "task.txt" if 'task' in command else ("notes.txt" if 'note' in command else None)
-            if target is None:
+            
+            if lastFile is None:
                 return "Specify tasks or notes to delete from."
             try:
-                with open(target, "r", encoding='utf-8') as f:
+                with open(lastFile, "r", encoding='utf-8') as f:
                     data = f.readlines()
             except Exception:
                 return "File not found."
+            
             if num == -1:
                 num = len(data)-1
             if 0 <= num < len(data):
                 deleted = data.pop(num)
-                with open(target, "w", encoding='utf-8') as f:
+                with open(lastFile, "w", encoding='utf-8') as f:
                     f.writelines(data)
                 return f"Deleted: {deleted.strip()}"
             return "Nothing to delete."
 
-        # reminders add
-        elif 'remind' in command and 'me' in command and 'to' in command:
-            aaa("other",con)
-            return "Reminder added."
-
         elif 'add' in command:
-            if 'reminder' in command or 'remind' in command:
-                if 'week' in command or 'weekly' in command:
-                    return aaa("week",con)
-                elif 'month' in command or 'monthly' in command:
-                    return aaa("month",con)
-                elif 'daily' in command or 'day' in command:
-                    return aaa("daily",con)
-                elif 'general' in command or 'normal' in command:
-                    return aaa("general",con)
-                else:
-                    return aaa("other",con)
-
-            elif "tasks" in command or 'task' in command:
+            if "tasks" in command or 'task' in command:
+                lastFile = "task.txt"
                 with open("task.txt", "a", encoding='utf-8') as f:
                     f.write(con + "\n")
                 return "Task added."
             elif 'notes' in command or 'note' in command:
+                lastFile = "notes.txt"
                 with open("notes.txt", "a", encoding='utf-8') as f:
                     f.write(encryption(con) + "\n")
                 return "Note saved."
@@ -285,21 +388,11 @@ def model1(user_input):
                 return "Added."
 
         elif 'print' in command or 'show' in command or 'display' in command or 'give' in command:
-            if 'remind' in command or 'reminder' in command:
-                if 'week' in command or 'weekly' in command:
-                    return xxx("week")
-                elif 'month' in command or 'monthly' in command:
-                    return xxx("month")
-                elif 'daily' in command or 'day' in command:
-                    return xxx("daily")
-                elif 'general' in command or 'normal' in command:
-                    return xxx("general")
-                else:
-                    return xxx("other")
-
-            elif "tasks" in command or 'task' in command:
+            if "tasks" in command or 'task' in command:
+                lastFile = "task.txt"
                 return open_file("task.txt")
             elif 'notes' in command or 'note' in command:
+                lastFile = "notes.txt"
                 return open_file("notes.txt")
             else:
                 return 'Nothing specific found to display.'
@@ -318,12 +411,13 @@ def model1(user_input):
 
         elif 'search' in command or 'browse' in command or 'google' in command:
             query = con.replace("search", "").replace("google", "").replace("browse", "").strip()
-            # return a link for the client to open
-            return f"Search this in your browser: https://google.com/search?q={query.replace(' ','+')}" if query else "No query provided."
+            #webbrowser.open(f"https://google.com/search?q={query}")
+            return "Searching for " + query if query else "No query provided."
 
         elif 'play' in command:
             query = con.replace("play", "").strip()
-            return f"Play on YouTube: https://www.youtube.com/results?search_query={query.replace(' ','+')}"
+            # open_video(f"https://www.youtube.com/results?search_query={query}")
+            return f"Playing {query}"
 
         elif "count" in command:
             return days_remains()
@@ -343,23 +437,24 @@ def model1(user_input):
             return "Goodbye! (web mode) — refresh the page to start again."
 
         elif 'monolog' in command:
-            return "Monolog mode not supported in web UI."
+            return "Work in Progress..."
 
         elif "open" in command:
             if "youtube" in command or "yt" in command:
-                return "Open: https://www.youtube.com"
+                return "Opening YouTube"
             elif "instagram" in command or "insta" in command:
-                return "Open: https://instagram.com"
+                return "Opening Instagram"
             elif "chatgtp" in command or "gtp" in command or "chat" in command:
-                return "Open: https://chat.openai.com"
+                return "Opening ChatGPT"
             else:
-                return "Open: https://google.com"
-
+                con = con.replace("open","Opening").strip()
+                return con
+            
         elif "hi" in command or "hello" in command or "hey" in command or "wassup" in command:
             return greet()
-
+        
         else:
-            return random.choice(["Sorry, I didn't understand that.", "Could you rephrase?", "I can't do that on the web."])
+            return random.choice(["Sorry...", "Could you rephrase?", "I can't do that on the web."])
 
     # instruction stack functions (simple persistence)
     def put_file(data):
@@ -412,10 +507,10 @@ def model1(user_input):
         ans = generateCommand(user_input, None)
 
     # record last instruction if useful
-    if ans not in ["Oops", "Sorry", "Hell No"] and (len(user_input) == 0 or user_input[0] not in ['0','1','2']):
+    if ans not in ["Sorry...", "Could you rephrase?", "I can't do that on the web."] and (len(user_input) == 0 or user_input[0] not in ['0','1','2']):
         inst_manager(user_input)
 
-    return ans
+    return ans if ans else "I'm Speachless..."
 
 # =========================
 # Flask routes
@@ -442,15 +537,12 @@ def api():
     # Append to chat log (like original)
     try:
         with open("chat.txt", "a", encoding='utf-8') as f:
-            now = datetime.datetime.now()
-            f.write(f"\nYou  : {q}")
+            f.write(f"You  : {q}")
             f.write(f"\nLISA : {answer}\n")
     except Exception:
         pass
 
     return jsonify({"response": answer})
-
-
 
 if __name__ == "__main__":
     # Run app
