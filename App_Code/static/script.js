@@ -131,4 +131,3 @@ micBtn.addEventListener("click", () => {
 
 // Welcome message
 appendBubble("Hello, how can I help you?", "bot");
-
