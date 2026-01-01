@@ -2,36 +2,6 @@
 # A desprate attempt to run LISA in my phone 24*7...
 # Thing I do for LOVE...
 # on 19 dec 2025 lisa is reconsidered...
-'''
----------------- Things to add in this Code. ---------------
-1. WebBrowsing is not working.                -
-2. Content selection of limited.
-3. Reminders must be added.                   -
-4. Monolog is not working.
-5. UI must be improved.
-6. Language is not as is coded.
-7. Make her responsis funny.
-8. Update Swear Function.                     -
-9. More File added section for partition of new things.         -
-10. Use Classes to achive more effictive answer.
-11. Notes are not readable {might be encrypted.}                -
-12. integrate this code with my new code base.
-13. Try to sell if for real money...***
-14. Make A file on which ChatGPT has the full access to read a nd write. {For using  versatile functoins.}{And this is soo cool}
-15. Make a log reminder file to log a real crazy thing to have.     
-16. Money manager.
-17. better version of monolog.
--> for improvement there should be a seperate page to manage my money manager and monolog feature.
-    as also it will contribute in my other projects in Web D.
-'''
-
-'''
------------ NEW THINGS TO TRY --------------
-1. Add a stable database.
-2. use any type of AI to content selection, command prioritization, flexible Answers {Non robotic}.
-3. Add more API's.
-4. Use Animations in UI.
-'''
 # app.py
 from flask import Flask, request, render_template, jsonify
 import webbrowser
@@ -65,7 +35,7 @@ ensure_files()
 # =========================
 wanted = ['monolog','gate.env','daily.env','mid.env','file','day','reminders','to','remind','me','reminder','kill','try','about','solve','solving','calculate','calculation','open','insta','instagram','yt','youtube','google','chatgtp','gtp','chat','search','browse','give','display','print','show','say','speek','task','tasks','note','notes','add', 'date', 'time', 'addn', 'addt', 'count', 'search', 'open', 'browse', 'play', 'solve', 'updates', 'hi', 'hello', 'hey', 'wassup', 'bye', 'goodbye', 'quit', 'exit', 'q', 'search', 'browse', 'google', 'delete', 'remove', 'pop', 'clear', 'wipe']
 bad_word = ["mf","fuck","nigga","hoe","bitch","dog","shit","fuckyou","hundin","motherfucker","pussy","asshole"]
-listRem = ["dump","personal","todo"]
+listRem = ["dump","personal","todo","buss"]
 lastFile = "notes.txt"
 # Simple encryption / decryption used by original model
 def encryption(inp, val=1):
@@ -177,6 +147,7 @@ def model1(user_input):
                         line = line.strip() + ':' + content + "\n"
                     newData.append(line)
                 f.writelines(newData)
+                f.truncate()
             return f"Added to {name}."
     
     def getRem(name):
@@ -206,18 +177,18 @@ def model1(user_input):
             for i in data:
                 line = i.split(":")
                 ans += str(line[0]).replace("[","").replace("]","").strip().capitalize() + " Reminders:\n"
-                count = 1
+                count = 0
                 for rem in line[1:]:
                     if rem == "" or rem.strip() == "":
                         continue
-                    ans +=  f"{count} {rem.strip()}" + "\n"
+                    ans +=  f"{count}. {rem.strip()}" + "\n"
                     count += 1
                 ans += "\n"
                 
 
             return ans.strip()
 
-    def removeRem(name, num):
+    def removeRem(name, num = -1):
         name = name.lower().strip()
         if name not in listRem:
             return f"Catagory of {name} does not exists."
@@ -226,17 +197,19 @@ def model1(user_input):
                 data = f.readlines()
                 f.seek(0)
                 newData = []
+                remRemoved = ""
                 for line in data:
                     if line.startswith(f"[{name}]"):
                         reminders = line.split(':')
                         remList = reminders[1:]
-                        if num < 0 or num >= len(remList):
+                        if num <= 0 or num >= len(remList):
                             return "Invalid reminder number."
-                        remList.pop(num)
+                        remRemoved = remList.pop(num)
                         line = reminders[0] + ':' + ':'.join(remList) + "\n"
                     newData.append(line)
                 f.writelines(newData)
-            return f"Removed reminder {num} from {name}."
+                f.truncate()
+            return f"Removed reminder {num} : {remRemoved} from {name}."
 
     def deleteRem(name):
         name = name.lower().strip()
@@ -251,6 +224,7 @@ def model1(user_input):
                     if not line.startswith(f"[{name}]"):
                         newData.append(line)
                 f.writelines(newData)
+                f.truncate()
             listRem.remove(name)
             return f"{name} Deleted."
 
@@ -268,6 +242,7 @@ def model1(user_input):
                         line = f"[{name}]:\n"
                     newData.append(line)
                 f.writelines(newData)
+                f.truncate()
             return f"Deleted all reminders from {name}."
 
     def generateCommand(x,con):
@@ -327,6 +302,12 @@ def model1(user_input):
                     if i in command:
                         return addRem(i, con)
                 return addRem("dump", con)
+            elif "create" in command or "new" in command or "make" in command or "divide" in command or "addn" in command:
+                for i in listRem:
+                    if i in command:
+                        return f"Catagory of {i} already exists."
+                name = con.replace("create","").replace("new","").replace("make","").replace("divide","").replace("addn","").strip()
+                return divideRem(name)
             elif "give" in command or "show" in command or "print" in command or "display" in command:
                 for i in listRem:
                     if i in command:
@@ -345,10 +326,10 @@ def model1(user_input):
                                 return "Specify which reminder number to remove."
                             return removeRem(i, num)
                     return "Specify which reminders to remove from."
-            elif "me" in command:
-                return allRem()
             elif "me" in command and "to" in command:
                 return addRem("dump",con)
+            elif "me" in command:
+                return allRem()
             else:
                 return "What do you want to do with reminders?"
 
