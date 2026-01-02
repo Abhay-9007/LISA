@@ -1,13 +1,15 @@
 # Date is 6th Dec 2025, 
 # A desprate attempt to run LISA in my phone 24*7...
 # Thing I do for LOVE...
-# on 19 dec 2025 lisa is reconsidered...
+# Run this "python3 ./app.py" to Start the Server.
+
 # app.py
 from flask import Flask, request, render_template, jsonify
 import webbrowser
 import datetime
 import random
 import os
+import json
 from datetime import date
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
@@ -35,7 +37,7 @@ ensure_files()
 # =========================
 wanted = ['monolog','gate.env','daily.env','mid.env','file','day','reminders','to','remind','me','reminder','kill','try','about','solve','solving','calculate','calculation','open','insta','instagram','yt','youtube','google','chatgtp','gtp','chat','search','browse','give','display','print','show','say','speek','task','tasks','note','notes','add', 'date', 'time', 'addn', 'addt', 'count', 'search', 'open', 'browse', 'play', 'solve', 'updates', 'hi', 'hello', 'hey', 'wassup', 'bye', 'goodbye', 'quit', 'exit', 'q', 'search', 'browse', 'google', 'delete', 'remove', 'pop', 'clear', 'wipe']
 bad_word = ["mf","fuck","nigga","hoe","bitch","dog","shit","fuckyou","hundin","motherfucker","pussy","asshole"]
-listRem = ["dump","personal","todo","buss"]
+listRem = ["dump","personal","todo","business"]
 lastFile = "notes.txt"
 # Simple encryption / decryption used by original model
 def encryption(inp, val=1):
@@ -69,6 +71,8 @@ def decryption(inp, val=1):
 # The actual adapted assistant model
 def model1(user_input):
     # helper functions (adapted)
+    with open("remind.json","r") as f:
+        data = json.load(f)
     def greet():
         greetings = [
             "Hello! How can I help you today?",
@@ -122,128 +126,96 @@ def model1(user_input):
                 return f.read()
         except Exception:
             return "File not found."
-    def divideRem(name):
-        name = name.lower().strip()
-        if name in listRem:
-            return f"Catagory of {name} already exists."
-        else:
-            with open("remind.txt","a") as f:
-                listRem.append(name)
-                f.write(f"[{name}]:\n")
-            return f"New catagory of {name} added."
+    def getRemList():
+        ans = "Reminder Lists:\n"
+        c = 0
+        for i in listRem:
+            ans += f"{c}. {i.capitalize()}\n"
+            c+=1
+        return ans.strip()
 
-    def addRem(name,content):
+    def printRem():
+        for i in data["all_reminders"]:
+            c = -1
+            print(i['name'].capitalize()+" Reminders:")
+            for j in i['reminders']:
+                print(f"{c+1}. {j}")
+                c += 1
+            print()
+        
+    def createRem(name):
         name = name.lower().strip()
-        content = content.strip()
-        if name not in listRem:
-            return f"Catagory of {name} does not exists."
-        else:
-            with open("remind.txt","r+") as f:
-                data = f.readlines()
-                f.seek(0)
-                newData = []
-                for line in data:
-                    if line.startswith(f"[{name}]"):
-                        line = line.strip() + ':' + content + "\n"
-                    newData.append(line)
-                f.writelines(newData)
-                f.truncate()
-            return f"Added to {name}."
-    
+        data["all_reminders"].append({"name":name,"reminders":[]})
+        with open("remind.json","w") as f:
+            json.dump(data,f, indent=4)
+        listRem.append(name)
+
+    def addRem(name,rem):
+        name = name.lower().strip()
+        for i in data["all_reminders"]:
+            if i["name"] == name:
+                i["reminders"].append(rem)
+        with open("remind.json","w") as f:
+            json.dump(data,f, indent=4)
+        return f"Added reminder to {name.capitalize()}."
+    def emptyRem(name,rem):
+        name = name.lower().strip()
+        for i in data["all_reminders"]:
+            if i["name"] == name:
+                i["reminders"].remove(rem)
+        with open("remind.json","w") as f:
+            json.dump(data,f, indent=4)
+        
+    def deleteRem(name):
+        name = name.lower().strip()
+        index = listRem.index(name)
+        for i in data["all_reminders"]:
+            if i["name"] == name:
+                del data["all_reminders"][index]
+        with open("remind.json","w") as f:
+            json.dump(data,f, indent=4)
+        listRem.remove(name)
+
     def getRem(name):
         name = name.lower().strip()
         if name not in listRem:
-            return f"Catagory of {name} does not exists."
-        else:
-            with open("remind.txt","r") as f:
-                data = f.readlines()
-                for line in data:
-                    if line.startswith(f"[{name}]"):
-                        reminders = line.split(':')[1:]
-                        if not reminders or reminders == ['\n']:
-                            return "No Reminders Found."
-                        ans = []
-                        count = 0
-                        for i in reminders:
-                            ans.append(f"{count}. {i.strip()}")
-                            count+=1
-                        return "\n".join(ans)
+            return f"{name.capitalize()} is not in remidner lists."
+        ans = f"{name.capitalize()} Reminders:\n"
+        length = len(ans)
+        for i in data["all_reminders"]:
+            c = 0
+            if i["name"] == str(name):
+                for j in i["reminders"]:
+                    ans += f"{c}. {j}"
+                    ans += "\n"
+                    c+=1
+        if len(ans) == length:
+            ans +=  "No Reminders Found."
+        return ans.strip()
 
+    def getAllRem():
+        ans = ""
+        for i in data["all_reminders"]:
+            c = 0
+            ans += f"{i['name'].capitalize()} Reminders:\n"
+            for j in i['reminders']:
+                ans += f"{c}. {j}\n"
+                c += 1
+            ans += "\n"
+        return ans.strip()
 
-    def allRem():
-        with open("remind.txt","r") as f:
-            data = f.readlines()
-            ans = ""
-            for i in data:
-                line = i.split(":")
-                ans += str(line[0]).replace("[","").replace("]","").strip().capitalize() + " Reminders:\n"
-                count = 0
-                for rem in line[1:]:
-                    if rem == "" or rem.strip() == "":
-                        continue
-                    ans +=  f"{count}. {rem.strip()}" + "\n"
-                    count += 1
-                ans += "\n"
-                
-
-            return ans.strip()
-
-    def removeRem(name, num = -1):
+    def removeRem(name,num):
         name = name.lower().strip()
-        if name not in listRem:
-            return f"Catagory of {name} does not exists."
-        else:
-            with open("remind.txt","r+") as f:
-                data = f.readlines()
-                f.seek(0)
-                newData = []
-                remRemoved = ""
-                for line in data:
-                    if line.startswith(f"[{name}]"):
-                        reminders = line.split(':')
-                        remList = reminders[1:]
-                        if num <= 0 or num >= len(remList):
-                            return "Invalid reminder number."
-                        remRemoved = remList.pop(num)
-                        line = reminders[0] + ':' + ':'.join(remList) + "\n"
-                    newData.append(line)
-                f.writelines(newData)
-                f.truncate()
-            return f"Removed reminder {num} : {remRemoved} from {name}."
-
-    def deleteRem(name):
-        name = name.lower().strip()
-        if name not in listRem:
-            return f"Catagory of {name} does not exists."
-        else:
-            with open("remind.txt","r+") as f:
-                data = f.readlines()
-                f.seek(0)
-                newData = []
-                for line in data:
-                    if not line.startswith(f"[{name}]"):
-                        newData.append(line)
-                f.writelines(newData)
-                f.truncate()
-            listRem.remove(name)
-            return f"{name} Deleted."
-
-    def emptyRem(name):
-        name = name.lower().strip()
-        if name not in listRem:
-            return f"Catagory of {name} does not exists."
-        else:
-            with open("remind.txt","r+") as f:
-                data = f.readlines()
-                f.seek(0)
-                newData = []
-                for line in data:
-                    if line.startswith(f"[{name}]"):
-                        line = f"[{name}]:\n"
-                    newData.append(line)
-                f.writelines(newData)
-                f.truncate()
-            return f"Deleted all reminders from {name}."
+        index = listRem.index(name)
+        for i in data["all_reminders"]:
+            if i["name"] == name:
+                if 0 <= num > len(i["reminders"])-1:
+                    return "Invalid reminder number."
+                line = i["reminders"][num]
+                del data["all_reminders"][index]["reminders"][num]
+        with open("remind.json","w") as f:
+            json.dump(data,f, indent=4)
+        return f"{line} got deleted from {name.capitalize()}."
 
     def generateCommand(x,con):
         if x is None:
@@ -301,18 +273,18 @@ def model1(user_input):
                 for i in listRem:
                     if i in command:
                         return addRem(i, con)
-                return addRem("dump", con)
+                return addRem("dump",con)
             elif "create" in command or "new" in command or "make" in command or "divide" in command or "addn" in command:
                 for i in listRem:
                     if i in command:
                         return f"Catagory of {i} already exists."
                 name = con.replace("create","").replace("new","").replace("make","").replace("divide","").replace("addn","").strip()
-                return divideRem(name)
+                return createRem(name)
             elif "give" in command or "show" in command or "print" in command or "display" in command:
                 for i in listRem:
                     if i in command:
                         return getRem(i)
-                return allRem()
+                return getAllRem()
             elif 'remove' in command or 'delete' in command or 'pop' in command or 'clear' in command or 'erase' in command or 'wipe' in command:
                 if 'all' in command:
                     for i in listRem:
@@ -329,7 +301,7 @@ def model1(user_input):
             elif "me" in command and "to" in command:
                 return addRem("dump",con)
             elif "me" in command:
-                return allRem()
+                return getAllRem()
             else:
                 return "What do you want to do with reminders?"
 
