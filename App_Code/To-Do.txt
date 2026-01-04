@@ -5,7 +5,7 @@
 4. Monolog is not working.
 5. UI must be improved.
 6. Language is not as is coded.
-7. Make her responsis funny.
+7. Make her responsis funny.                  -
 8. Update Swear Function.                     -
 9. More File added section for partition of new things.         -
 10. Use Classes to achive more effictive answer.
@@ -16,6 +16,7 @@
 15. Make a log reminder file to log a real crazy thing to have.     
 16. Money manager.
 17. better version of monolog.
+18. Use JSON file for Monolog.                -
 -> for improvement there should be a seperate page to manage my money manager and monolog feature.
     as also it will contribute in my other projects in Web D.
 '''
