@@ -17,28 +17,39 @@ app = Flask(__name__, static_folder="static", template_folder="templates")
 # -------------------------
 # Utility: safe file ensure
 # -------------------------
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 def ensure_files():
     files_defaults = {
         "remind.txt": "",
         "notes.txt": "",
         "task.txt": "",
         "about.txt": "LISA 1.4 - Web assistant adapted by integration.",
-        "itr.txt": ""
+        "itr.txt": "",
+        "remind.json": json.dumps({
+            "all_reminders": [
+                {"name": "dump", "reminders": []},
+                {"name": "personal", "reminders": []},
+                {"name": "todo", "reminders": []},
+                {"name": "business", "reminders": []}
+            ]
+        }, indent=4)
     }
+
     for fname, content in files_defaults.items():
-        if not os.path.exists(fname):
-            with open(fname, "w", encoding="utf-8") as f:
+        file_path = os.path.join(BASE_DIR, fname)
+        if not os.path.exists(file_path):
+            with open(file_path, "w", encoding="utf-8") as f:
                 f.write(content)
 
 ensure_files()
-
 # =========================
 # Adapted model1 (from file 2)
 # =========================
-wanted = ['monolog','gate.env','daily.env','mid.env','file','day','reminders','to','remind','me','reminder','kill','try','about','solve','solving','calculate','calculation','open','insta','instagram','yt','youtube','google','chatgtp','gtp','chat','search','browse','give','display','print','show','say','speek','task','tasks','note','notes','add', 'date', 'time', 'addn', 'addt', 'count', 'search', 'open', 'browse', 'play', 'solve', 'updates', 'hi', 'hello', 'hey', 'wassup', 'bye', 'goodbye', 'quit', 'exit', 'q', 'search', 'browse', 'google', 'delete', 'remove', 'pop', 'clear', 'wipe']
+wanted = ['times','all','create','monolog','gate.env','daily.env','mid.env','file','day','reminders','to','remind','me','reminder','kill','try','about','solve','solving','calculate','calculation','open','insta','instagram','yt','youtube','google','chatgtp','gtp','chat','search','browse','give','display','print','show','say','speek','task','tasks','note','notes','add', 'date', 'time', 'addn', 'addt', 'count', 'search', 'open', 'browse', 'play', 'solve', 'updates', 'hi', 'hello', 'hey', 'wassup', 'bye', 'goodbye', 'quit', 'exit', 'q', 'search', 'browse', 'google', 'delete', 'remove', 'pop', 'clear', 'wipe']
 bad_word = ["mf","fuck","nigga","hoe","bitch","dog","shit","fuckyou","hundin","motherfucker","pussy","asshole"]
-listRem = ["dump","personal","todo","business"]
 lastFile = "notes.txt"
+repeat = 1
 # Simple encryption / decryption used by original model
 def encryption(inp, val=1):
     if not inp:
@@ -71,9 +82,17 @@ def decryption(inp, val=1):
 # The actual adapted assistant model
 def model1(user_input):
     # helper functions (adapted)
+    data = {}
     with open("remind.json","r") as f:
         data = json.load(f)
+    def genRemList():
+        remList = []
+        for i in data["all_reminders"]:
+            remList.append(i["name"])
+        return remList 
+    listRem = genRemList()
     def greet():
+        
         greetings = [
             "Hello! How can I help you today?",
             "Hi there! What can I do for you?",
@@ -133,7 +152,6 @@ def model1(user_input):
             ans += f"{c}. {i.capitalize()}\n"
             c+=1
         return ans.strip()
-
     def printRem():
         for i in data["all_reminders"]:
             c = -1
@@ -142,14 +160,13 @@ def model1(user_input):
                 print(f"{c+1}. {j}")
                 c += 1
             print()
-        
     def createRem(name):
         name = name.lower().strip()
         data["all_reminders"].append({"name":name,"reminders":[]})
         with open("remind.json","w") as f:
             json.dump(data,f, indent=4)
         listRem.append(name)
-
+        return "Reminder by the name of "+name.capitalize()+" created."
     def addRem(name,rem):
         name = name.lower().strip()
         for i in data["all_reminders"]:
@@ -165,7 +182,13 @@ def model1(user_input):
                 i["reminders"].remove(rem)
         with open("remind.json","w") as f:
             json.dump(data,f, indent=4)
-        
+    def wipeRem(name):
+        name = name.lower().strip()
+        for i in data["all_reminders"]:
+            if i["name"] == name:
+                i["reminders"] = []
+        with open("remind.json","w") as f:
+            json.dump(data,f, indent=4)
     def deleteRem(name):
         name = name.lower().strip()
         index = listRem.index(name)
@@ -175,7 +198,6 @@ def model1(user_input):
         with open("remind.json","w") as f:
             json.dump(data,f, indent=4)
         listRem.remove(name)
-
     def getRem(name):
         name = name.lower().strip()
         if name not in listRem:
@@ -192,18 +214,14 @@ def model1(user_input):
         if len(ans) == length:
             ans +=  "No Reminders Found."
         return ans.strip()
-
     def getAllRem():
         ans = ""
-        for i in data["all_reminders"]:
-            c = 0
-            ans += f"{i['name'].capitalize()} Reminders:\n"
-            for j in i['reminders']:
-                ans += f"{c}. {j}\n"
-                c += 1
-            ans += "\n"
-        return ans.strip()
-
+        for i in listRem:
+            if "No Reminders Found." not in getRem(i):
+                ans += getRem(i) + "\n"
+                ans += '\n'
+        
+        return ans
     def removeRem(name,num):
         name = name.lower().strip()
         index = listRem.index(name)
@@ -227,21 +245,24 @@ def model1(user_input):
                 con = x.split("'")[1]
             elif '"' in x:
                 con = x.split('"')[1]
-        for i in con.split():
-            if i.lower() in bad_word:
-                return swears()
         x_proc = x.lower().strip().split()
         num = -1
+        global repeat
+        repeat = 1
         for i in x_proc:
             try:
                 num = int(i)
             except Exception:
                 pass
+            if i.lower() in bad_word:
+                return swears()
             if i in wanted and i != "" or i in listRem:
                 command.append(i)
+            if i == "times" or i == "time": # use 5x instead of 5 times...\
+                repeat = num
         command = " ".join(command)
         print("----------------------------------------------------------------------------")
-        print(f"|   The command is :    {command}\n|   The context is :    {con}\n|   The number  is :    {num}")
+        print(f"|   The command is :    {command}\n|   The context is :    {con}\n|   The number  is :    {num}\n|   The repeat  is :    {repeat}")
         print("----------------------------------------------------------------------------")
         return process_command(command, con, num)
 
@@ -281,11 +302,19 @@ def model1(user_input):
                 name = con.replace("create","").replace("new","").replace("make","").replace("divide","").replace("addn","").strip()
                 return createRem(name)
             elif "give" in command or "show" in command or "print" in command or "display" in command:
+                if "all" in command:
+                    return getAllRem()
                 for i in listRem:
                     if i in command:
                         return getRem(i)
-                return getAllRem()
-            elif 'remove' in command or 'delete' in command or 'pop' in command or 'clear' in command or 'erase' in command or 'wipe' in command:
+                else:
+                    return "Specify which reminders to display."
+            elif 'clear' in command or 'erase' in command or 'wipe' in command:
+                for i in listRem:
+                    if i in command:
+                        return wipeRem(i)
+                return "Specify which reminders to clear."
+            elif 'remove' in command or 'delete': 
                 if 'all' in command:
                     for i in listRem:
                         if i in command:
@@ -305,10 +334,7 @@ def model1(user_input):
             else:
                 return "What do you want to do with reminders?"
 
-        # pop/delete
         elif 'pop' in command or 'delete' in command or 'del' in command:
-            # basic handling for task/notes
-            
             if lastFile is None:
                 return "Specify tasks or notes to delete from."
             try:
@@ -348,7 +374,7 @@ def model1(user_input):
                 return open_file("task.txt")
             elif 'notes' in command or 'note' in command:
                 lastFile = "notes.txt"
-                return open_file("notes.txt")
+                return decryption(open_file("notes.txt"))
             else:
                 return 'Nothing specific found to display.'
 
@@ -411,7 +437,6 @@ def model1(user_input):
         else:
             return random.choice(["Sorry...", "Could you rephrase?", "I can't do that on the web."])
 
-    # instruction stack functions (simple persistence)
     def put_file(data):
         with open("itr.txt", 'w', encoding='utf-8') as f:
             for item in data:
@@ -448,7 +473,6 @@ def model1(user_input):
         else:
             return None
 
-    # main routing of this call
     if not user_input:
         return "I didn't receive any input."
 
@@ -461,11 +485,10 @@ def model1(user_input):
     else:
         ans = generateCommand(user_input, None)
 
-    # record last instruction if useful
     if ans not in ["Sorry...", "Could you rephrase?", "I can't do that on the web."] and (len(user_input) == 0 or user_input[0] not in ['0','1','2']):
         inst_manager(user_input)
 
-    return ans if ans else "I'm Speachless..."
+    return (ans+'\n')*repeat if ans else "I'm Speachless..."
 
 # =========================
 # Flask routes
@@ -476,7 +499,6 @@ def home():
 
 @app.route("/api", methods=["GET","POST"])
 def api():
-    # accept GET /api?q=...
     if request.method == "GET":
         q = request.args.get("q","").strip()
     else:
@@ -486,10 +508,8 @@ def api():
     if not q:
         return jsonify({"error":"Query missing"}), 400
 
-    # call model
     answer = model1(q)
 
-    # Append to chat log (like original)
     try:
         with open("chat.txt", "a", encoding='utf-8') as f:
             f.write(f"You  : {q}")
