@@ -16,7 +16,7 @@
 15. Make a log reminder file to log a real crazy thing to have.     
 16. Money manager.
 17. better version of monolog.
-18. Use JSON file for Monolog.                -
+18. Use JSON file for Reminders.                -
 -> for improvement there should be a seperate page to manage my money manager and monolog feature.
     as also it will contribute in my other projects in Web D.
 '''
