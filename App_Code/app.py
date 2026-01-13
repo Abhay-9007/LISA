@@ -237,7 +237,7 @@ def model1(user_input):
 
     def generateCommand(x,con):
         if x is None:
-            return "I didn't get that. Can you rephrase?"
+            return random.choice(["I didn't get that. Can you rephrase?","Nigga What..."])
         command = []
         if con is None:
             con = x
