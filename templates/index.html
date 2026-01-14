@@ -1,214 +1,190 @@
+<!-- templates/index.html
+
+# Date is 6th Dec 2025, 
+# A desprate attempt to run LISA in my phone 24*7...
+# Thing I do for LOVE...
+
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Chat Box</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>LISA — Web Assistant</title>
 
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f0f2f5;
-        }
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+    :root{
+        --bg:#09090b;
+        --card:#111217;
+        --accent:#00d0ff;
+        --accent-2:#0077ff;
+        --muted:#9aa4b2;
+    }
+    *{box-sizing:border-box}
+    body{
+        margin:0;
+        font-family: "Poppins", system-ui, sans-serif;
+        background: radial-gradient(1200px 600px at 10% 10%, rgba(0,150,255,0.03), transparent),
+                    radial-gradient(800px 400px at 90% 90%, rgba(0,200,255,0.02), transparent),
+                    var(--bg);
+        color:#e6eef6;
+        -webkit-font-smoothing:antialiased;
+        -moz-osx-font-smoothing:grayscale;
+        min-height:100vh;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        padding:20px;
+    }
 
-        .chat-container {
-            width: 100%;
-            max-width: 600px;
-            height: 80vh;
-            max-height: 700px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
+    .app {
+        width:100%;
+        max-width:1380px;   
+        height:90vh;
+        display:grid;
+        grid-template-columns: 95vw 360px;
+        gap:20px;
+    }
 
-        .chat-header {
-            background-color: #0084ff;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
+    .panel {
+        background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+        border-radius:16px;
+        padding:18px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 30px rgba(0,150,255,0.04);
+        border: 1px solid rgba(0,150,255,0.06);
+        display:flex;
+        flex-direction:column;
+        min-height:0;
+    }
 
-        .chat-body {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+    header.app-header {
+        display:flex;
+        align-items:center;
+        gap:12px;
+        margin-bottom:10px;
+    }
+    .logo {
+        width:44px;height:44px;border-radius:10px;
+        background:linear-gradient(45deg,var(--accent-2),var(--accent));
+        display:flex;align-items:center;justify-content:center;
+        box-shadow:0 6px 18px rgba(0,200,255,0.08), inset 0 -6px 18px rgba(255,255,255,0.02);
+        font-weight:700;color:#011627;
+        font-size:18px;
+    }
+    .title {font-size:18px;font-weight:600}
+    .subtitle{font-size:12px;color:var(--muted);margin-top:-2px}
 
-        .message {
-            max-width: 70%;
-            padding: 10px 15px;
-            border-radius: 15px;
-            line-height: 1.4;
-        }
+    .chat {
+        flex:1;
+        overflow:auto;
+        padding:10px;
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+        scrollbar-width:thin;
+    }
 
-        .user-message {
-            background-color: #0084ff;
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 5px;
-        }
+    .bubble {
+        max-width:78%;
+        padding:12px 14px;
+        border-radius:12px;
+        line-height:1.4;
+        animation:pop .18s ease;
+        word-wrap:break-word;
+        box-shadow:0 6px 20px rgba(0,0,0,0.6);
+        white-space: pre-wrap;
+    }
+    @keyframes pop { from {opacity:0; transform: translateY(8px)} to {opacity:1; transform:none} }
 
-        .bot-message {
-            background-color: #e9ecef;
-            color: #333;
-            align-self: flex-start;
-            border-bottom-left-radius: 5px;
-        }
+    .user { align-self:flex-end; background: linear-gradient(90deg,var(--accent-2),var(--accent)); color:#02192b; border-radius:12px 12px 6px 12px; }
+    .bot  { align-self:flex-start; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.04)); border-left:4px solid var(--accent); color:#e6eef6; }
 
-        .timestamp {
-            font-size: 0.8em;
-            color: #666;
-            margin-top: 5px;
-            text-align: right;
-        }
+    .meta { font-size:11px; color:var(--muted); margin-top:6px; }
 
-        .chat-input {
-            display: flex;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-top: 1px solid #ddd;
-        }
+    .compose {
+        margin-top:12px;
+        display:flex;
+        gap:10px;
+        align-items:center;
+    }
+    .input {
+        flex:1;
+        display:flex;
+        gap:8px;
+        align-items:center;
+    }
+    .input input {
+        width:100%;
+        padding:12px 14px;
+        border-radius:12px;
+        border:1px solid rgba(0,150,255,0.12);
+        background:#0b0b0f;
+        color:inherit;
+        outline:none;
+    }
+    .btn {
+        padding:10px 12px;border-radius:10px;border:0;cursor:pointer;
+        background:linear-gradient(90deg,var(--accent-2),var(--accent));
+        color:#021627;font-weight:600;
+    }
+    .mic {
+        background:#111218;border:1px solid rgba(255,255,255,0.03);
+        color:var(--accent); font-weight:700;
+    }
 
-        #userInput {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            outline: none;
-            font-size: 1em;
-        }
+    /* right panel */
+    .side {
+        display:flex;
+        flex-direction:column;
+        gap:12px;
+    }
+    .card {
+        background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.03));
+        border-radius:12px;padding:14px;border:1px solid rgba(0,150,255,0.05);
+    }
+    .toggle {display:flex;gap:8px;align-items:center;justify-content:space-between}
+    label.switch {position:relative; display:inline-block; width:46px; height:26px}
+    label.switch input{display:none;}
+    label.switch .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#111;border-radius:26px;transition:.2s;border:1px solid rgba(255,255,255,0.04)}
+    label.switch .slider:before{position:absolute;content:"";height:20px;width:20px;left:3px;top:3px;background:white;border-radius:50%;transition:.2s}
+    label.switch input:checked + .slider{background:linear-gradient(90deg,var(--accent-2),var(--accent))}
+    label.switch input:checked + .slider:before{transform:translateX(20px)}
 
-        #sendButton {
-            margin-left: 10px;
-            padding: 10px 20px;
-            background-color: #0084ff;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 1em;
-        }
-
-        #sendButton:hover {
-            background-color: #0066cc;
-        }
-
-        @media (max-width: 480px) {
-            .chat-container {
-                height: 100vh;
-                border-radius: 0;
-            }
-
-            .chat-header {
-                font-size: 1em;
-                padding: 10px;
-            }
-
-            .chat-body {
-                padding: 10px;
-            }
-
-            .chat-input {
-                padding: 10px;
-            }
-
-            #userInput {
-                font-size: 0.9em;
-            }
-
-            #sendButton {
-                padding: 8px 15px;
-                font-size: 0.9em;
-            }
-        }
-    </style>
+    footer.note{font-size:12px;color:var(--muted);text-align:center;margin-top:6px}
+    @media (max-width:880px){
+        .app {grid-template-columns: 1fr; height:100vh}
+        .side {order:2}
+    }
+</style>
 </head>
 <body>
-    <div class="chat-container">
-        <div class="chat-header">Chat Box</div>
-        <div class="chat-body" id="chatBody"></div>
-        <div class="chat-input">
-            <input type="text" id="userInput" placeholder="Type your message..." autocomplete="off">
-            <button id="sendButton">Send</button>
-        </div>
+    <div class="app">
+        <section class="panel">
+            <header class="app-header">
+                <div class="logo">LISA</div>
+                <div>
+                    <div class="title">LISA • Web Assistant</div>
+                </div>
+                <label class="switch">
+                    <input id="ttsToggle" type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+            </header>
+
+            <div id="chat" class="chat" aria-live="polite"></div>
+
+            <div class="compose">
+                <div class="input">
+                    <input id="msg" type="text" placeholder="Type Here..." autocomplete="off" />
+                </div>
+                <button id="send" class="btn">Send</button>
+                <button id="mic" class="btn mic">🎤</button>
+            </div>
+        </section>
     </div>
 
-    <script>
-        const chatBody = document.getElementById('chatBody');
-        const userInput = document.getElementById('userInput');
-        const sendButton = document.getElementById('sendButton');
-
-        function addMessage(content, isUser) {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message', isUser ? 'user-message' : 'bot-message');
-            messageDiv.textContent = content;
-
-            const timestamp = document.createElement('div');
-            timestamp.classList.add('timestamp');
-            timestamp.textContent = new Date().toLocaleTimeString();
-
-            const wrapper = document.createElement('div');
-            wrapper.style.display = 'flex';
-            wrapper.style.flexDirection = 'column';
-            wrapper.style.alignItems = isUser ? 'flex-end' : 'flex-start';
-            wrapper.appendChild(messageDiv);
-            wrapper.appendChild(timestamp);
-
-            chatBody.appendChild(wrapper);
-            chatBody.scrollTop = chatBody.scrollHeight;
-        }
-
-        async function processInput(input) {
-            try {
-                const response = await fetch('http://localhost:5000/process', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ input: input }),
-                });
-                const data = await response.json();
-                return data.output;
-            } catch (error) {
-                console.error('Error:', error);
-                return 'Error: Could not process input';
-            }
-        }
-
-        async function handleSend() {
-            const input = userInput.value.trim();
-            if (input) {
-                addMessage(input, true);
-                const response = await processInput(input);
-                addMessage(response, false);
-                userInput.value = '';
-            }
-        }
-
-        sendButton.addEventListener('click', handleSend);
-        userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleSend();
-        });
-
-        // Focus input on page load
-        userInput.focus();
-    </script>
+    <script src="/static/script.js"></script>
 </body>
 </html>
