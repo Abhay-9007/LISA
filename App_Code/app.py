@@ -46,7 +46,7 @@ ensure_files()
 # =========================
 # Adapted model1 (from file 2)
 # =========================
-wanted = ['times','all','create','monolog','gate.env','daily.env','mid.env','file','day','reminders','to','remind','me','reminder','kill','try','about','solve','solving','calculate','calculation','open','insta','instagram','yt','youtube','google','chatgtp','gtp','chat','search','browse','give','display','print','show','say','speek','task','tasks','note','notes','add', 'date', 'time', 'addn', 'addt', 'count', 'search', 'open', 'browse', 'play', 'solve', 'updates', 'hi', 'hello', 'hey', 'wassup', 'bye', 'goodbye', 'quit', 'exit', 'q', 'search', 'browse', 'google', 'delete', 'remove', 'pop', 'clear', 'wipe']
+wanted = ['omit','times','all','create','monolog','gate.env','daily.env','mid.env','file','day','reminders','to','remind','me','reminder','kill','try','about','solve','solving','calculate','calculation','open','insta','instagram','yt','youtube','google','chatgtp','gtp','chat','search','browse','give','display','print','show','say','speek','task','tasks','note','notes','add', 'date', 'time', 'addn', 'addt', 'count', 'search', 'open', 'browse', 'play', 'solve', 'updates', 'hi', 'hello', 'hey', 'wassup', 'bye', 'goodbye', 'quit', 'exit', 'q', 'search', 'browse', 'google', 'delete', 'remove', 'pop', 'clear', 'wipe']
 bad_word = ["mf","fuck","nigga","hoe","bitch","dog","shit","fuckyou","hundin","motherfucker","pussy","asshole"]
 lastFile = "notes.txt"
 repeat = 1
@@ -89,10 +89,10 @@ def model1(user_input):
         remList = []
         for i in data["all_reminders"]:
             remList.append(i["name"])
-        return remList 
+        return remList
     listRem = genRemList()
     def greet():
-        
+
         greetings = [
             "Hello! How can I help you today?",
             "Hi there! What can I do for you?",
@@ -125,10 +125,10 @@ def model1(user_input):
                 "That's not a proper way to speak.",
                 "I doubt your Upbringing"]
         return random.choice(toSay)
-    
+
     def open_video(url):
-        webbrowser.get("open -a 'Brave Browser' %s").open(url) 
-        
+        webbrowser.get("open -a 'Brave Browser' %s").open(url)
+
     def days_remains():
         today = date.today()
         target = date(2026, 1, 1)
@@ -220,7 +220,7 @@ def model1(user_input):
             if "No Reminders Found." not in getRem(i):
                 ans += getRem(i) + "\n"
                 ans += '\n'
-        
+
         return ans
     def removeRem(name,num):
         name = name.lower().strip()
@@ -237,7 +237,7 @@ def model1(user_input):
 
     def generateCommand(x,con):
         if x is None:
-            return random.choice(["I didn't get that. Can you rephrase?","Nigga What..."])
+            return "I didn't get that. Can you rephrase?"
         command = []
         if con is None:
             con = x
@@ -314,12 +314,17 @@ def model1(user_input):
                     if i in command:
                         return wipeRem(i)
                 return "Specify which reminders to clear."
-            elif 'remove' in command or 'delete': 
+            elif "omit" in command:
+                if con in listRem:
+                    deleteRem(con)
+                    return f"{con.capitalize()} Reminder Deleted."
+                return "Specify which reminder to delete."
+            elif 'remove' in command or 'delete':
                 if 'all' in command:
                     for i in listRem:
                         if i in command:
                             return deleteRem(i)
-                    return "Specify which reminders to clear."
+                    return "Specify which reminders to delete."
                 else:
                     for i in listRem:
                         if i in command:
@@ -342,7 +347,7 @@ def model1(user_input):
                     data = f.readlines()
             except Exception:
                 return "File not found."
-            
+
             if num == -1:
                 num = len(data)-1
             if 0 <= num < len(data):
@@ -430,10 +435,10 @@ def model1(user_input):
             else:
                 con = con.replace("open","Opening").strip()
                 return con
-            
+
         elif "hi" in command or "hello" in command or "hey" in command or "wassup" in command:
             return greet()
-        
+
         else:
             return random.choice(["Sorry...", "Could you rephrase?", "I can't do that on the web."])
 
