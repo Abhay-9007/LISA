@@ -14,9 +14,6 @@ from datetime import date
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
-# -------------------------
-# Utility: safe file ensure
-# -------------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def ensure_files():
@@ -43,9 +40,6 @@ def ensure_files():
                 f.write(content)
 
 ensure_files()
-# =========================
-# Adapted model1 (from file 2)
-# =========================
 wanted = ['omit','times','all','create','monolog','gate.env','daily.env','mid.env','file','day','reminders','to','remind','me','reminder','kill','try','about','solve','solving','calculate','calculation','open','insta','instagram','yt','youtube','google','chatgtp','gtp','chat','search','browse','give','display','print','show','say','speek','task','tasks','note','notes','add', 'date', 'time', 'addn', 'addt', 'count', 'search', 'open', 'browse', 'play', 'solve', 'updates', 'hi', 'hello', 'hey', 'wassup', 'bye', 'goodbye', 'quit', 'exit', 'q', 'search', 'browse', 'google', 'delete', 'remove', 'pop', 'clear', 'wipe']
 bad_word = ["mf","fuck","nigga","hoe","bitch","dog","shit","fuckyou","hundin","motherfucker","pussy","asshole"]
 lastFile = "notes.txt"
