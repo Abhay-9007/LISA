@@ -46,7 +46,7 @@ ensure_files()
 # =========================
 # Adapted model1 (from file 2)
 # =========================
-wanted = set(['time','current','class','whole','timetable','table','omit','times','all','create','monolog','gate.env','daily.env','mid.env','file','day','reminders','to','remind','me','reminder','kill','try','about','solve','solving','calculate','calculation','open','insta','instagram','yt','youtube','google','chatgtp','gtp','chat','search','browse','give','display','print','show','say','speek','task','tasks','note','notes','add', 'date', 'time', 'addn', 'addt', 'count', 'search', 'open', 'browse', 'play', 'solve', 'updates', 'hi', 'hello', 'hey', 'wassup', 'bye', 'goodbye', 'quit', 'exit', 'q', 'search', 'browse', 'google', 'delete', 'remove', 'pop', 'clear', 'wipe'])
+wanted = set(['tttime','current','class','whole','timetable','omit','times','all','create','monolog','gate.env','daily.env','mid.env','file','day','reminders','to','remind','me','reminder','kill','try','about','solve','solving','calculate','calculation','open','insta','instagram','yt','youtube','google','chatgtp','gtp','chat','search','browse','give','display','print','show','say','speek','task','tasks','note','notes','add', 'date', 'time', 'addn', 'addt', 'count', 'search', 'open', 'browse', 'play', 'solve', 'updates', 'hi', 'hello', 'hey', 'wassup', 'bye', 'goodbye', 'quit', 'exit', 'q', 'search', 'browse', 'google', 'delete', 'remove', 'pop', 'clear', 'wipe'])
 bad_word = ["mf","fuck","nigga","hoe","bitch","dog","shit","fuckyou","hundin","motherfucker","pussy","asshole"]
 lastFile = "notes.txt"
 repeat = 1
@@ -177,7 +177,7 @@ timetableData = {
                 "location" : "Empty class"
             }
         },
-        "thrusday" : {
+        "thursday" : {
             "10:20-11:10" : {
                 "class" : "GD Class",
                 "name" : "Ms. Malay Gupta Ma'am",
@@ -659,10 +659,7 @@ def model1(user_input):
                 return "What do you want to do with reminders?"
 
         elif "timetable" in command:
-            if "whole" in command:
-                return wholeDayTimetable()
-            else:
-                return currClassGetter()
+            return wholeDayTimetable()
 
         elif "class" in command:
             return currClassGetter()
@@ -718,10 +715,10 @@ def model1(user_input):
             return open_file("about.txt")
 
         elif 'date' in command:
-            return get_date()+get_time()
+            return get_date()+' '+get_time()
             # return get_time()
 
-        elif 'time' in command:
+        elif 'tttime' in command or 'time' in command:
             return get_time()
 
         elif 'search' in command or 'browse' in command or 'google' in command:
