@@ -104,7 +104,7 @@ def model1(user_input):
     def get_time():
         now = datetime.datetime.now()
         return f"The current time is {now.strftime('%H:%M:%S')}"
-
+        
     def get_date():
         today = datetime.date.today()
         return f"Today's date is {today.strftime('%B %d, %Y')}"
