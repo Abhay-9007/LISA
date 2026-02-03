@@ -1,7 +1,3 @@
-// Date is 6th Dec 2025, 
-// A desprate attempt to run LISA in my phone 24*7...
-// Thing I do for LOVE...
-
 // static/script.js
 const chat = document.getElementById("chat");
 const msgInput = document.getElementById("msg");
@@ -36,6 +32,9 @@ async function sendMessage(text) {
             content = data.response.replace("Searching for", "").trim();
             window.open("https://google.com/search?q="+ content, "_blank");
         }
+        else if (data.response.includes("Monolog")){
+            window.open("https://abhay907.pythonanywhere.com/", "_blank");
+        }
         else if (data.response.includes("Playing")){
             content = data.response.replace("Playing", "").trim();
             window.open("https://www.youtube.com/results?search_query="+ content, "_blank");
@@ -57,6 +56,7 @@ async function sendMessage(text) {
             
         }
         if (data && data.response) {
+            //data.response = "Abhay is a boss here: \n gottam is a Nigga";
             appendBubble(data.response, "bot");
             if (ttsToggle.checked && "speechSynthesis" in window) {
                 speakText(data.response);
