@@ -120,8 +120,8 @@ timetableData = {
                 "location" : "Empty class"
             },
             "2:40-3:30" : {
-                "class" : "ICB Class",
-                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
+                "class" : "CP Class",
+                "name" : "Mr. Abhishek Kumar Sir",
                 "location" : "AB1 330"
             },
             "3:30-4:20" : {
@@ -130,9 +130,9 @@ timetableData = {
                 "location" : "AB1 330"
             },
             "4:20-5:10" : {
-                "class" : "Free Class",
-                "name" : "Abhay Pratap",
-                "location" : "Empty class"
+                "class" : "ICB Class",
+                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
+                "location" : "AB1 330"
             }
         },
         "wednesday" : {
@@ -179,19 +179,19 @@ timetableData = {
         },
         "thursday" : {
             "10:20-11:10" : {
+                "class" : "CP Class",
+                "name" : "Mr. Abhishek Kumar Sir",
+                "location" : "AB6 121"
+            },
+            "11:10-12:00" : {
                 "class" : "GD Class",
                 "name" : "Ms. Malay Gupta Ma'am",
                 "location" : "AB6 121"
             },
-            "11:10-12:00" : {
-                "class" : "ICB Class",
-                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "AB6 121"
-            },
             "12:00-12:50" : {
-                "class" : "ICB Class",
-                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "AB6 121"
+                "class" : "Free Class",
+                "name" : "Abhay Pratap",
+                "location" : "Empty class"
             },
             "12:50-1:50" : {
                 "class" : "Lunch Time",
@@ -231,19 +231,19 @@ timetableData = {
                 "location" : "ABI 423"
             },
             "12:00-12:50" : {
-                "class" : "Lunch Time",
-                "name" : "Nishchal Kumar",
-                "location" : "Empty class"
+                "class" : "ICB Class",
+                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
+                "location" : "AB1 418"
             },
             "12:50-1:50" : {
-                "class" : "ICB TEST",
+                "class" : "ICB Class",
                 "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "ABI 413"
+                "location" : "AB1 418"
             },
             "1:50-2:40" : {
-                "class" : "ICB TEST",
-                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "ABI 413"
+                "class" : "Preparer for Friday night",
+                "name" : "Abhay Pratap",
+                "location" : "Empty class"
             },
             "2:40-3:30" : {
                 "class" : "Preparer for Friday night",
@@ -251,14 +251,14 @@ timetableData = {
                 "location" : "Empty class"
             },
             "3:30-4:20" : {
-                "class" : "Preparer for Friday night",
-                "name" : "Abhay Pratap",
-                "location" : "Empty class"
+                "class" : "ICB TEST",
+                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
+                "location" : "ABI 413"
             },
             "4:20-5:10" : {
-                "class" : "Preparer for Friday night",
-                "name" : "Abhay Pratap",
-                "location" : "Empty class"
+                "class" : "ICB TEST",
+                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
+                "location" : "ABI 413"
             }
         },
         "saturday" : {
