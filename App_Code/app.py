@@ -233,12 +233,12 @@ timetableData = {
             "12:00-12:50" : {
                 "class" : "ICB Class",
                 "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "AB1 418"
+                "location" : "AB1 423" 
             },
             "12:50-1:50" : {
                 "class" : "ICB Class",
                 "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "AB1 418"
+                "location" : "AB1 423"
             },
             "1:50-2:40" : {
                 "class" : "Preparer for Friday night",
