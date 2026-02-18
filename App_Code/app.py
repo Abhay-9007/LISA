@@ -9,6 +9,8 @@ import webbrowser
 import datetime
 import random
 import os
+import time
+from zoneinfo import ZoneInfo
 import json
 from datetime import date
 now = datetime.datetime.now()
@@ -46,306 +48,306 @@ ensure_files()
 # =========================
 # Adapted model1 (from file 2)
 # =========================
-wanted = set(['tttime','current','class','whole','timetable','omit','times','all','create','monolog','gate.env','daily.env','mid.env','file','day','reminders','to','remind','me','reminder','kill','try','about','solve','solving','calculate','calculation','open','insta','instagram','yt','youtube','google','chatgtp','gtp','chat','search','browse','give','display','print','show','say','speek','task','tasks','note','notes','add', 'date', 'time', 'addn', 'addt', 'count', 'search', 'open', 'browse', 'play', 'solve', 'updates', 'hi', 'hello', 'hey', 'wassup', 'bye', 'goodbye', 'quit', 'exit', 'q', 'search', 'browse', 'google', 'delete', 'remove', 'pop', 'clear', 'wipe'])
+wanted = set(['ttime','current','class','whole','timetable','omit','times','all','create','monolog','gate.env','daily.env','mid.env','file','day','reminders','to','remind','me','reminder','kill','try','about','solve','solving','calculate','calculation','open','insta','instagram','yt','youtube','google','chatgtp','gtp','chat','search','browse','give','display','print','show','say','speek','task','tasks','note','notes','add', 'date', 'time', 'addn', 'addt', 'count', 'search', 'open', 'browse', 'play', 'solve', 'updates', 'hi', 'hello', 'hey', 'wassup', 'bye', 'goodbye', 'quit', 'exit', 'q', 'search', 'browse', 'google', 'delete', 'remove', 'pop', 'clear', 'wipe'])
 bad_word = ["mf","fuck","nigga","hoe","bitch","dog","shit","fuckyou","hundin","motherfucker","pussy","asshole"]
 lastFile = "notes.txt"
 repeat = 1
 timetableData = {
-        "monday" : {
-            "10:20-11:10" : {
-                "class" : "ICB Class",
-                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "AB1 402"
-            },
-            "11:10-12:00" : {
-                "class" : "ICB Class",
-                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "AB1 402"
-            },
-            "12:00-12:50" : {
-                "class" : "ICB Class",
-                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "AB1 402"
-            },
-            "12:50-1:50" : {
-                "class" : "Lunch Time",
-                "name" : "Nishchal Kumar",
-                "location" : "Empty class"
-            },
-            "1:50-2:40" : {
-                "class" : "Node JS Class",
-                "name" : "Mr. Akash Chaudhary Sir",
-                "location" : "AB1 423"
-            },
-            "2:40-3:30" : {
-                "class" : "Node JS Class",
-                "name" : "Mr. Akash Chaudhary Sir",
-                "location" : "AB1 423"
-            },
-            "3:30-4:20" : {
-                "class" : "Free Class",
-                "name" : "Abhay Pratap",
-                "location" : "Empty class"
-            },
-            "4:20-5:10" : {
-                "class" : "Free Class",
-                "name" : "Abhay Pratap",
-                "location" : "Empty class"
-            }
+    "monday" : {
+        "10:00-11:00" : {
+            "class" : "ICB Class",
+            "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
+            "location" : "AB1 402"
         },
-        "tuesday" : {
-            "10:20-11:10" : {
-                "class" : "ICB Class",
-                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "AB1 402"
-            },
-            "11:10-12:00" : {
-                "class" : "ICB Class",
-                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "AB1 402"
-            },
-            "12:00-12:50" : {
-                "class" : "ICB Class",
-                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "AB1 402"
-            },
-            "12:50-1:50" : {
-                "class" : "Lunch Time",
-                "name" : "Nishchal Kumar",
-                "location" : "Empty class"
-            },
-            "1:50-2:40" : {
-                "class" : "Free Class",
-                "name" : "Abhay Pratap",
-                "location" : "Empty class"
-            },
-            "2:40-3:30" : {
-                "class" : "CP Class",
-                "name" : "Mr. Abhishek Kumar Sir",
-                "location" : "AB1 330"
-            },
-            "3:30-4:20" : {
-                "class" : "ICB Class",
-                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "AB1 330"
-            },
-            "4:20-5:10" : {
-                "class" : "ICB Class",
-                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "AB1 330"
-            }
+        "11:00-12:00" : {
+            "class" : "ICB Class",
+            "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
+            "location" : "AB1 402"
         },
-        "wednesday" : {
-            "10:20-11:10" : {
-                "class" : "ICB Class",
-                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "AB6 108"
-            },
-            "11:10-12:00" : {
-                "class" : "ICB Class",
-                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "AB6 108"
-            },
-            "12:00-12:50" : {
-                "class" : "ICB Class",
-                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "AB6 108"
-            },
-            "12:50-1:50" : {
-                "class" : "Lunch Time",
-                "name" : "Nishchal Kumar",
-                "location" : "Empty class"
-            },
-            "1:50-2:40" : {
-                "class" : "Quant Class",
-                "name" : "Mr. Yogesh Kumar Sir",
-                "location" : "AB1 418"
-            },
-            "2:40-3:30" : {
-                "class" : "ICB Class",
-                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "AB1 418"
-            },
-            "3:30-4:20" : {
-                "class" : "ICB Class",
-                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "AB1 418"
-            },
-            "4:20-5:10" : {
-                "class" : "Free Class",
-                "name" : "Abhay Pratap",
-                "location" : "Empty class"
-            }
+        "12:00-1:00" : {
+            "class" : "ICB Class",
+            "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
+            "location" : "AB1 402"
         },
-        "thursday" : {
-            "10:20-11:10" : {
-                "class" : "CP Class",
-                "name" : "Mr. Abhishek Kumar Sir",
-                "location" : "AB6 121"
-            },
-            "11:10-12:00" : {
-                "class" : "GD Class",
-                "name" : "Ms. Malay Gupta Ma'am",
-                "location" : "AB6 121"
-            },
-            "12:00-12:50" : {
-                "class" : "Free Class",
-                "name" : "Abhay Pratap",
-                "location" : "Empty class"
-            },
-            "12:50-1:50" : {
-                "class" : "Lunch Time",
-                "name" : "Nishchal Kumar",
-                "location" : "Empty class"
-            },
-            "1:50-2:40" : {
-                "class" : "Quant Class",
-                "name" : "Mr. Yogesh Kumar Sir",
-                "location" : "AB6 121"
-            },
-            "2:40-3:30" : {
-                "class" : "Node JS Class",
-                "name" : "Mr. Akash Chaudhary Sir",
-                "location" : "AB6 121"
-            },
-            "3:30-4:20" : {
-                "class" : "varbal Class",
-                "name" : "Mr. Sachin Pratap Singh Sir",
-                "location" : "AB6 121"
-            },
-            "4:20-5:10" : {
-                "class" : "Free Class",
-                "name" : "Abhay Pratap",
-                "location" : "Empty class"
-            }
+        "1:00-2:00" : {
+            "class" : "Lunch Time",
+            "name" : "Nishchal Kumar",
+            "location" : "Empty class"
         },
-        "friday" : {
-            "10:20-11:10" : {
-                "class" : "Node JS Lab",
-                "name" : "Mr. Akash Chaudhary Sir",
-                "location" : "ABI 423"
-            },
-            "11:10-12:00" : {
-                "class" : "Node JS Lab",
-                "name" : "Mr. Akash Chaudhary Sir",
-                "location" : "ABI 423"
-            },
-            "12:00-12:50" : {
-                "class" : "ICB Class",
-                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "AB1 423"
-            },
-            "12:50-1:50" : {
-                "class" : "ICB Class",
-                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "AB1 423"
-            },
-            "1:50-2:40" : {
-                "class" : "Preparer for Friday night",
-                "name" : "Abhay Pratap",
-                "location" : "Empty class"
-            },
-            "2:40-3:30" : {
-                "class" : "Preparer for Friday night",
-                "name" : "Abhay Pratap",
-                "location" : "Empty class"
-            },
-            "3:30-4:20" : {
-                "class" : "ICB TEST",
-                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "ABI 413"
-            },
-            "4:20-5:10" : {
-                "class" : "ICB TEST",
-                "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-                "location" : "ABI 413"
-            }
+        "2:00-3:00" : {
+            "class" : "Node JS Class",
+            "name" : "Mr. Akash Chaudhary Sir",
+            "location" : "AB1 423"
         },
-        "saturday" : {
-            "10:20-11:10" : {
-                "class" : "",
-                "name" : "",
-                "location" : ""
-            },
-            "11:10-12:00" : {
-                "class" : "",
-                "name" : "",
-                "location" : ""
-            },
-            "12:00-12:50" : {
-                "class" : "",
-                "name" : "",
-                "location" : ""
-            },
-            "12:50-1:50" : {
-                "class" : "",
-                "name" : "",
-                "location" : ""
-            },
-            "1:50-2:40" : {
-                "class" : "",
-                "name" : "",
-                "location" : ""
-            },
-            "2:40-3:30" : {
-                "class" : "",
-                "name" : "",
-                "location" : ""
-            },
-            "3:30-4:20" : {
-                "class" : "",
-                "name" : "",
-                "location" : ""
-            },
-            "4:20-5:10" : {
-                "class" : "",
-                "name" : "",
-                "location" : ""
-            }
+        "3:00-4:00" : {
+            "class" : "Node JS Class",
+            "name" : "Mr. Akash Chaudhary Sir",
+            "location" : "AB1 423"
         },
-        "sunday" : {
-            "10:20-11:10" : {
-                "class" : "",
-                "name" : "",
-                "location" : ""
-            },
-            "11:10-12:00" : {
-                "class" : "",
-                "name" : "",
-                "location" : ""
-            },
-            "12:00-12:50" : {
-                "class" : "",
-                "name" : "",
-                "location" : ""
-            },
-            "12:50-1:50" : {
-                "class" : "",
-                "name" : "",
-                "location" : ""
-            },
-            "1:50-2:40" : {
-                "class" : "",
-                "name" : "",
-                "location" : ""
-            },
-            "2:40-3:30" : {
-                "class" : "",
-                "name" : "",
-                "location" : ""
-            },
-            "3:30-4:20" : {
-                "class" : "",
-                "name" : "",
-                "location" : ""
-            },
-            "4:20-5:10" : {
-                "class" : "",
-                "name" : "",
-                "location" : ""
-            }
+        "4:00-5:00" : {
+            "class" : "Free Class",
+            "name" : "Abhay Pratap",
+            "location" : "Empty class"
+        },
+        "5:00-6:00" : {
+            "class" : "Free Class",
+            "name" : "Abhay Pratap",
+            "location" : "Empty class"
+        }
+    },
+    "tuesday" : {
+        "10:00-11:00" : {
+            "class" : "ICB Class",
+            "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
+            "location" : "AB1 402"
+        },
+        "11:00-12:00" : {
+            "class" : "ICB Class",
+            "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
+            "location" : "AB1 402"
+        },
+        "12:00-1:00" : {
+            "class" : "CP Class",
+            "name" : "Mr. Abhishek Kumar Sir",
+            "location" : "AB1 402"
+        },
+        "1:00-2:00" : {
+            "class" : "Lunch Time",
+            "name" : "Nishchal Kumar",
+            "location" : "Empty class"
+        },
+        "2:00-3:00" : {
+            "class" : "CodeChef Exam",
+            "name" : "Exam",
+            "location" : "AB 2 5006"
+        },
+        "3:00-4:00" : {
+            "class" : "CodeChef Exam",
+            "name" : "Exam",
+            "location" : "AB 2 5006"
+        },
+        "4:00-5:00" : {
+            "class" : "ICB Class",
+            "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
+            "location" : "AB1 330"
+        },
+        "5:00-6:00" : {
+            "class" : "ICB Class",
+            "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
+            "location" : "AB1 330"
+        }
+    },
+    "wednesday" : {
+        "10:00-11:00" : {
+            "class" : "ICB Class",
+            "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
+            "location" : "AB6 108"
+        },
+        "11:00-12:00" : {
+            "class" : "ICB Class",
+            "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
+            "location" : "AB6 108"
+        },
+        "12:00-1:00" : {
+            "class" : "ICB Class",
+            "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
+            "location" : "AB6 108"
+        },
+        "1:00-2:00" : {
+            "class" : "Lunch Time",
+            "name" : "Nishchal Kumar",
+            "location" : "Empty class"
+        },
+        "2:00-3:00" : {
+            "class" : "Quant Class",
+            "name" : "Mr. Robin Gupta Sir",
+            "location" : "AB1 418"
+        },
+        "3:00-4:00" : {
+            "class" : "ICB Class",
+            "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
+            "location" : "AB1 418"
+        },
+        "4:00-5:00" : {
+            "class" : "ICB Class",
+            "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
+            "location" : "AB1 418"
+        },
+        "5:00-6:00" : {
+            "class" : "Free Class",
+            "name" : "Abhay Pratap",
+            "location" : "Empty class"
+        }
+    },
+    "thursday" : {
+        "10:00-11:00" : {
+            "class" : "CP Class",
+            "name" : "Mr. Abhishek Kumar Sir",
+            "location" : "AB6 121"
+        },
+        "11:00-12:00" : {
+            "class" : "GD Class",
+            "name" : "Ms. Malay Gupta Ma'am",
+            "location" : "AB6 121"
+        },
+        "12:00-1:00" : {
+            "class" : "Free Class",
+            "name" : "Abhay Pratap",
+            "location" : "Empty class"
+        },
+        "1:00-2:00" : {
+            "class" : "Lunch Time",
+            "name" : "Nishchal Kumar",
+            "location" : "Empty class"
+        },
+        "2:00-3:00" : {
+            "class" : "Quant Class",
+            "name" : "Mr. Robin Gupta Sir",
+            "location" : "AB6 121"
+        },
+        "3:00-4:00" : {
+            "class" : "Node JS Class",
+            "name" : "Mr. Akash Chaudhary Sir",
+            "location" : "AB6 121"
+        },
+        "4:00-5:00" : {
+            "class" : "varbal Class",
+            "name" : "Mr. Sachin Pratap Singh Sir",
+            "location" : "AB6 121"
+        },
+        "5:00-6:00" : {
+            "class" : "Free Class",
+            "name" : "Abhay Pratap",
+            "location" : "Empty class"
+        }
+    },
+    "friday" : {
+        "10:00-11:00" : {
+            "class" : "Node JS Lab",
+            "name" : "Mr. Akash Chaudhary Sir",
+            "location" : "ABI 423"
+        },
+        "11:00-12:00" : {
+            "class" : "Node JS Lab",
+            "name" : "Mr. Akash Chaudhary Sir",
+            "location" : "ABI 423"
+        },
+        "12:00-1:00" : {
+            "class" : "ICB Class",
+            "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
+            "location" : "AB1 423"
+        },
+        "1:00-2:00" : {
+            "class" : "ICB Class",
+            "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
+            "location" : "AB1 423"
+        },
+        "2:00-3:00" : {
+            "class" : "Preparer for Friday night",
+            "name" : "Abhay Pratap",
+            "location" : "Empty class"
+        },
+        "3:00-4:00" : {
+            "class" : "Preparer for Friday night",
+            "name" : "Abhay Pratap",
+            "location" : "Empty class"
+        },
+        "4:00-5:00" : {
+            "class" : "ICB TEST",
+            "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
+            "location" : "ABI 413"
+        },
+        "5:00-6:00" : {
+            "class" : "ICB TEST",
+            "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
+            "location" : "ABI 413"
+        }
+    },
+    "saturday" : {
+        "10:00-11:00" : {
+            "class" : "",
+            "name" : "",
+            "location" : ""
+        },
+        "11:00-12:00" : {
+            "class" : "",
+            "name" : "",
+            "location" : ""
+        },
+        "12:00-1:00" : {
+            "class" : "",
+            "name" : "",
+            "location" : ""
+        },
+        "1:00-2:00" : {
+            "class" : "",
+            "name" : "",
+            "location" : ""
+        },
+        "2:00-3:00" : {
+            "class" : "",
+            "name" : "",
+            "location" : ""
+        },
+        "3:00-4:00" : {
+            "class" : "",
+            "name" : "",
+            "location" : ""
+        },
+        "4:00-5:00" : {
+            "class" : "",
+            "name" : "",
+            "location" : ""
+        },
+        "5:00-6:00" : {
+            "class" : "",
+            "name" : "",
+            "location" : ""
+        }
+    },
+    "sunday" : {
+        "10:00-11:00" : {
+            "class" : "",
+            "name" : "",
+            "location" : ""
+        },
+        "11:00-12:00" : {
+            "class" : "",
+            "name" : "",
+            "location" : ""
+        },
+        "12:00-1:00" : {
+            "class" : "",
+            "name" : "",
+            "location" : ""
+        },
+        "1:00-2:00" : {
+            "class" : "",
+            "name" : "",
+            "location" : ""
+        },
+        "2:00-3:00" : {
+            "class" : "",
+            "name" : "",
+            "location" : ""
+        },
+        "3:00-4:00" : {
+            "class" : "",
+            "name" : "",
+            "location" : ""
+        },
+        "4:00-5:00" : {
+            "class" : "",
+            "name" : "",
+            "location" : ""
+        },
+        "5:00-6:00" : {
+            "class" : "",
+            "name" : "",
+            "location" : ""
         }
     }
+}
 # Simple encryption / decryption used by original model
 def encryption(inp, val=1):
     if not inp:
@@ -397,8 +399,10 @@ def model1(user_input):
         return random.choice(greetings)
 
     def get_time():
-        now = datetime.datetime.now()
-        return f"The current time is {now.strftime('%H:%M:%S')}"
+        now = datetime.datetime.now(ZoneInfo("Asia/Kolkata"))
+        currTime = now.strftime('%H:%M:%S')
+        time.sleep(0)
+        return f"The current time is {currTime}"
 
     def get_date():
         today = datetime.date.today()
@@ -532,8 +536,9 @@ def model1(user_input):
         return f"{line} got deleted from {name.capitalize()}."
     def timeGetter():
         now = datetime.datetime.now()
-        arrlist = ["10:20-11:10","11:10-12:00","12:00-12:50","12:50-1:50","1:50-2:40","2:40-3:30","3:30-4:20","4:20-5:10"]
-        arrlist2 = [10.2, 11.1, 12.0, 12.5, 13.5, 14.4, 15.3, 16.2, 17.1]
+        time.sleep(0)
+        arrlist = ["10:00-11:00","11:00-12:00","12:00-1:00","1:00-2:00","2:00-3:00","3:00-4:00","4:00-5:00","5:00-6:00"]
+        arrlist2 = [10, 11, 12, 13, 14, 15, 16, 17, 18]
         currtime = now.time()
         currtime2 = float(str(currtime)[:5].replace(":","."))
         for i in range(len(arrlist2)):
@@ -543,13 +548,14 @@ def model1(user_input):
                 return arrlist[i-1]
     def currClassGetter(givenTime=timeGetter()):
         now = datetime.datetime.now()
+        time.sleep(0)
         day = now.strftime("%A").lower()
         structure = f"Name : {timetableData[day][givenTime]['class']} \nAddrs  : {timetableData[day][givenTime]['location']}"
         return structure
     def wholeDayTimetable():
         structure = ""
         c = 1
-        for i in ["10:20-11:10","11:10-12:00","12:00-12:50","12:50-1:50","1:50-2:40","2:40-3:30","3:30-4:20","4:20-5:10"]:
+        for i in ["10:00-11:00","11:00-12:00","12:00-1:00","1:00-2:00","2:00-3:00","3:00-4:00","4:00-5:00","5:00-6:00"]:
             #structure += f"-------- Lactur : {c} --------\n"+currClassGetter(i)+'\n'
             structure += f"Lactur : {c} \n"+currClassGetter(i)+'\n'
             c+=1
@@ -715,10 +721,10 @@ def model1(user_input):
             return open_file("about.txt")
 
         elif 'date' in command:
-            return get_date()+' '+get_time()
+            return get_date()
             # return get_time()
 
-        elif 'tttime' in command or 'time' in command:
+        elif 'ttime' in command or 'time' in command:
             return get_time()
 
         elif 'search' in command or 'browse' in command or 'google' in command:
