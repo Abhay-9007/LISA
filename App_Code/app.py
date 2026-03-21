@@ -3,7 +3,6 @@
 # Thing I do for LOVE...
 # Run this "python3 ./app.py" to Start the Server.
 
-# app.py
 from flask import Flask, request, render_template, jsonify
 import webbrowser
 import datetime
