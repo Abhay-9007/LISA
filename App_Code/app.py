@@ -15,9 +15,7 @@ from datetime import date
 now = datetime.datetime.now()
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
-# -------------------------
-# Utility: safe file ensure
-# -------------------------
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def ensure_files():
