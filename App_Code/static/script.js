@@ -26,8 +26,6 @@ async function sendMessage(text) {
             body: JSON.stringify({ q: text })
         });
         const data = await res.json();
-        // console.log(res);
-        // console.log(data);
         if (data.response.includes("Searching")){
             content = data.response.replace("Searching for", "").trim();
             window.open("https://google.com/search?q="+ content, "_blank");
