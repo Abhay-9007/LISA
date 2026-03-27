@@ -1,4 +1,4 @@
-# these are all the colors...
+# these are all the colors..
 print("\033[31mRed")
 print("\033[32mGreen")
 print("\033[33mYellow")
