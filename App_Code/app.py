@@ -579,9 +579,9 @@ def model1(user_input):
             if i == "times" or i == "time": # use 5x instead of 5 times...\
                 repeat = num
         command = " ".join(command)
-        print("----------------------------------------------------------------------------")
+        print("---------------------------------------------------------------------------------------------------------")
         print(f"|   The command is :    {command}\n|   The context is :    {con}\n|   The number  is :    {num}\n|   The repeat  is :    {repeat}")
-        print("----------------------------------------------------------------------------")
+        print("---------------------------------------------------------------------------------------------------------")
         return process_command(command, con, num)
 
     def process_command(command, con, num):
