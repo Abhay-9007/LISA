@@ -32,3 +32,4 @@
 3. Add more API's.
 4. Use Animations in UI.
 5. Multiple user base, that will be better for my resume.
+6. take it to production.
