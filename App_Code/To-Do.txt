@@ -33,3 +33,4 @@
 4. Use Animations in UI.
 5. Multiple user base, that will be better for my resume.
 6. take it to production.
+7. work on it.
