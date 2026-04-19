@@ -341,7 +341,6 @@ timetableData = {
         }
     }
 }
-# Simple encryption / decryption used by original model
 def encryption(inp, val=1):
     if not inp:
         return ""
@@ -429,7 +428,6 @@ def model1(user_input):
         ans = f"You have {dl} days."
         return ans
 
-    # file helpers
     def open_file(file_name):
         try:
             with open(file_name, 'r', encoding='utf-8') as f:
