@@ -713,7 +713,6 @@ def model1(user_input):
 
         elif 'date' in command:
             return get_date()
-            # return get_time()
 
         elif 'ttime' in command or 'time' in command:
             return get_time()
