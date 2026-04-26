@@ -6,17 +6,14 @@ import sqlite3
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-# ----------------- Setup Flask -----------------
 app = Flask(__name__)
 CORS(app)
 
-# ----------------- Setup SQLite -----------------
 DB_FILE = "chatbot.db"
 
 def init_db():
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
-    # Tables for tasks, notes, reminders
     c.execute("""
     CREATE TABLE IF NOT EXISTS reminders (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
