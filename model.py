@@ -88,7 +88,6 @@ def model(text):
     if "hi" in text or "hello" in text or "hey" in text:
         return greet()
 
-    # Notes
     if "add note" in text:
         note_content = text.replace("add note", "").strip()
         c.execute("INSERT INTO notes (content) VALUES (?)", (note_content,))
@@ -112,7 +111,6 @@ def model(text):
         tasks = c.fetchall()
         return "\n".join(t[0] for t in tasks) if tasks else "No tasks yet."
 
-    # Reminders
     if "add reminder" in text or "remind me" in text:
         reminder_content = text.replace("add reminder", "").replace("remind me", "").strip()
         c.execute("INSERT INTO reminders (content) VALUES (?)", (reminder_content,))
@@ -124,7 +122,6 @@ def model(text):
         reminders = c.fetchall()
         return "\n".join(r[0] for r in reminders) if reminders else "No reminders yet."
 
-    # Solve simple math
     if "solve" in text or "calculate" in text:
         try:
             expression = text.replace("solve", "").replace("calculate", "").strip()
@@ -133,7 +130,6 @@ def model(text):
         except Exception:
             return "I couldn't solve that."
 
-    # Default
     return "Sorry, I didn't understand that."
 
 # ----------------- Flask Routes -----------------
