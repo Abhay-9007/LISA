@@ -156,16 +156,16 @@ function startScheduler() {
     const hours = now.getHours(); // 0–23
 
     // showNotification();
-
+    showNotification();
     // Between 8 AM (8) and 10 PM (22)
-    if (hours >= 8 && hours <= 24) {
-      showNotification();
-      document.getElementById("status").innerText =
-        "Status: Active (" + now.toLocaleTimeString() + ")";
-    } else {
-      document.getElementById("status").innerText =
-        "Status: Sleeping (" + now.toLocaleTimeString() + ")";
-    }
+    // if (hours >= 8 && hours <= 24) {
+      
+    //   document.getElementById("status").innerText =
+    //     "Status: Active (" + now.toLocaleTimeString() + ")";
+    // } else {
+    //   document.getElementById("status").innerText =
+    //     "Status: Sleeping (" + now.toLocaleTimeString() + ")";
+    // }
   }
 
   // Run once immediately
