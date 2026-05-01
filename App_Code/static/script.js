@@ -26,6 +26,8 @@ async function sendMessage(text) {
             body: JSON.stringify({ q: text })
         });
         const data = await res.json();
+        // console.log(res);
+        // console.log(data);
         if (data.response.includes("Searching")){
             content = data.response.replace("Searching for", "").trim();
             window.open("https://google.com/search?q="+ content, "_blank");
@@ -128,4 +130,48 @@ micBtn.addEventListener("click", () => {
 });
 
 // Welcome message
-appendBubble("Hello, how can I help you?", "bot");
+appendBubble("Nigga you Good???", "bot");
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  if ("Notification" in window) {
+    Notification.requestPermission();
+    startScheduler();
+  } else {
+    alert("Notifications not supported");
+  }
+});
+
+function showNotification() {
+  if (Notification.permission === "granted") {
+    new Notification("⏰ Reminder", {
+      body: "Just Dont waste time....",
+    });
+  }
+}
+
+function startScheduler() {
+  function checkTimeAndNotify() {
+    const now = new Date();
+    const hours = now.getHours(); // 0–23
+
+    // showNotification();
+
+    // Between 8 AM (8) and 10 PM (22)
+    if (hours >= 8 && hours <= 24) {
+      showNotification();
+      document.getElementById("status").innerText =
+        "Status: Active (" + now.toLocaleTimeString() + ")";
+    } else {
+      document.getElementById("status").innerText =
+        "Status: Sleeping (" + now.toLocaleTimeString() + ")";
+    }
+  }
+
+  // Run once immediately
+  checkTimeAndNotify();
+
+  // Then every hour
+  setInterval(checkTimeAndNotify, 60 * 60 * 1000);
+}
+
