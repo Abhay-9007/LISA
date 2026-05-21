@@ -36,3 +36,6 @@
 6. take it to production.
 7. work on it....
 8. Do something nigga.
+
+
+to make a test version or a another live version to show case lisa
