@@ -1,8 +1,9 @@
 # Date is 6th Dec 2025, 
-# A desprate attempt to run LISA in my phone 24*7... I DID IT...
+# A desprate attempt to run LISA in my phone 24*7...
 # Thing I do for LOVE...
 # Run this "python3 ./app.py" to Start the Server.
 
+# app.py
 from flask import Flask, request, render_template, jsonify
 import webbrowser
 import datetime
@@ -13,8 +14,11 @@ from zoneinfo import ZoneInfo
 import json
 from datetime import date
 now = datetime.datetime.now()
-app = Flask(__name__, static_folder="static", template_folder="templates"
+app = Flask(__name__, static_folder="static", template_folder="templates")
 
+# -------------------------
+# Utility: safe file ensure
+# -------------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def ensure_files():
@@ -41,6 +45,9 @@ def ensure_files():
                 f.write(content)
 
 ensure_files()
+# =========================
+# Adapted model1 (from file 2)
+# =========================
 wanted = set(['ttime','current','class','whole','timetable','omit','times','all','create','monolog','gate.env','daily.env','mid.env','file','day','reminders','to','remind','me','reminder','kill','try','about','solve','solving','calculate','calculation','open','insta','instagram','yt','youtube','google','chatgtp','gtp','chat','search','browse','give','display','print','show','say','speek','task','tasks','note','notes','add', 'date', 'time', 'addn', 'addt', 'count', 'search', 'open', 'browse', 'play', 'solve', 'updates', 'hi', 'hello', 'hey', 'wassup', 'bye', 'goodbye', 'quit', 'exit', 'q', 'search', 'browse', 'google', 'delete', 'remove', 'pop', 'clear', 'wipe'])
 bad_word = ["mf","fuck","nigga","hoe","bitch","dog","shit","fuckyou","hundin","motherfucker","pussy","asshole"]
 lastFile = "notes.txt"
@@ -228,7 +235,7 @@ timetableData = {
         "12:00-1:00" : {
             "class" : "ICB Class",
             "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-            "location" : "AB1 423"
+            "location" : "AB1 423" 
         },
         "1:00-2:00" : {
             "class" : "ICB Class",
@@ -341,6 +348,7 @@ timetableData = {
         }
     }
 }
+# Simple encryption / decryption used by original model
 def encryption(inp, val=1):
     if not inp:
         return ""
@@ -428,6 +436,7 @@ def model1(user_input):
         ans = f"You have {dl} days."
         return ans
 
+    # file helpers
     def open_file(file_name):
         try:
             with open(file_name, 'r', encoding='utf-8') as f:
@@ -541,7 +550,7 @@ def model1(user_input):
         now = datetime.datetime.now()
         time.sleep(0)
         day = now.strftime("%A").lower()
-        structure = f"Name : {timetableData[day][givenTime]['class']} \nAddrs  : {timetableData[day][givenTime]['location']}"
+        structure = f"Time : {givenTime.replace("-"," to ")} \nName : {timetableData[day][givenTime]['class']} \nAddrs  : {timetableData[day][givenTime]['location']}"
         return structure
     def wholeDayTimetable():
         structure = ""
@@ -577,9 +586,9 @@ def model1(user_input):
             if i == "times" or i == "time": # use 5x instead of 5 times...\
                 repeat = num
         command = " ".join(command)
-        print("---------------------------------------------------------------------------------------------------------")
+        print("----------------------------------------------------------------------------")
         print(f"|   The command is :    {command}\n|   The context is :    {con}\n|   The number  is :    {num}\n|   The repeat  is :    {repeat}")
-        print("---------------------------------------------------------------------------------------------------------")
+        print("----------------------------------------------------------------------------")
         return process_command(command, con, num)
 
     def process_command(command, con, num):
@@ -713,6 +722,7 @@ def model1(user_input):
 
         elif 'date' in command:
             return get_date()
+            # return get_time()
 
         elif 'ttime' in command or 'time' in command:
             return get_time()
