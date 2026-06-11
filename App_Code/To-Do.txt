@@ -20,7 +20,7 @@
 19. Ability to give Notificatons. {with time}
 20. Alarm and + an GUI better one...
 21. Try coding a little version of it for an app in car.
-22. integrete with Ao
+22. integrete with Ai
 23. Update timetable.
 -> for improvement there should be a seperate page to manage my money manager and monolog feature.
     as also it will contribute in my other projects in Web D.
@@ -35,7 +35,8 @@
 5. Multiple user base, that will be better for my resume.
 6. take it to production.
 7. work on it....
-8. Do something nigga.
+8. Do something nigga....
+9. plz do it....
 
 
 to make a test version or a another live version to show case lisa
