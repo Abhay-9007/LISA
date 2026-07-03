@@ -36,6 +36,8 @@
 6. take it to production.
 7. work on it....
 
-
+integrate AI in it
+make it public or build it for multiple users
+add some of my commands {in theory on site} to assist users.
 
 to make a test version or a another live version to show case lisa
