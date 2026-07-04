@@ -39,5 +39,7 @@
 integrate AI in it
 make it public or build it for multiple users
 add some of my commands {in theory on site} to assist users.
+wtite code to fill out the Timetable list,
+also to update it.
 
 to make a test version or a another live version to show case lisa
