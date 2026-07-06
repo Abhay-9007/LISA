@@ -42,6 +42,4 @@ add some of my commands {in theory on site} to assist users.
 wtite code to fill out the Timetable list,
 also to update it.
 
-i'm here for false commit...
-
 to make a test version or a another live version to show case lisa
