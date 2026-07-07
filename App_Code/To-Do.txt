@@ -42,6 +42,6 @@ add some of my commands {in theory on site} to assist users.
 wtite code to fill out the Timetable list,
 also to update it.
 
-adding this so i can remove it in future....
+adding this so i can remove it in future...
 
 to make a test version or a another live version to show case lisa
