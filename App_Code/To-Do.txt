@@ -42,5 +42,8 @@ add some of my commands {in theory on site} to assist users.
 wtite code to fill out the Timetable list,
 also to update it.
 
+this will count as 2 commits
+one to add it
+another to remove it
 
 to make a test version or a another live version to show case lisa
