@@ -16,12 +16,10 @@ from datetime import date
 from google import genai
 
 
-gAPI = ---Gemini_API---
-
+gAPI = ""
 
 
 now = datetime.datetime.now()
-
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
 # -------------------------
@@ -243,7 +241,7 @@ timetableData = {
         "12:00-1:00" : {
             "class" : "ICB Class",
             "name" : "Mr. Manwatkar Sumedkumar Janardanji Sir",
-            "location" : "AB1 423"
+            "location" : "AB1 423" 
         },
         "1:00-2:00" : {
             "class" : "ICB Class",
@@ -558,7 +556,7 @@ def model1(user_input):
         now = datetime.datetime.now()
         time.sleep(0)
         day = now.strftime("%A").lower()
-        structure = f"Name : {timetableData[day][givenTime]['class']} \nAddrs  : {timetableData[day][givenTime]['location']}"
+        structure = f"Time : {givenTime.replace("-"," to ")} \nName : {timetableData[day][givenTime]['class']} \nAddrs  : {timetableData[day][givenTime]['location']}"
         return structure
     def wholeDayTimetable():
         structure = ""
@@ -818,12 +816,35 @@ def model1(user_input):
             return last_intr[0]
         else:
             return None
+        
+    def aiInputProcessor(userInput):
+        # here the shit happens 17 Aug 2026.
+        # gotta redefine it and it is a bit slow,
+        # so optimization of this api is also needed.
+        LISA_instruction = (
+            "u have to chech for any incorrect spelling in the input."
+            "Do not alter any thing which is inclosed in any type of Quotes."
+            f"if possible to frame the input is such a way that it can be read {wanted}. like - where are my notes -> give me notes."
+        )
 
+        client = genai.Client(api_key=gAPI)
+
+        response = client.models.generate_content(
+            model="gemini-3.6-flash",
+            contents=userInput,
+            config={
+                "system_instruction": LISA_instruction
+            },
+        )
+
+        return response.text
+    
     def aiOutput(userInput):
         LISA_instruction = (
             "You are LISA, a brilliant, loyal, and sophisticated female AI assistant. "
-            "Speak with a British accent. Be extremely polite, addressing the user as 'Sir'. "
-            "Keep responses incredibly short, simple, direct, and to the point. Avoid fluff."
+            "Speak with a British accent. Be extremely polite, addressing the user as 'Sir' only if suitable. "
+            "Keep responses incredibly short, simple, direct, and to the point, might be a bit long if reasonable. Avoid fluff."
+            "remind me for any incorrect spelling in the input."
         )
 
         client = genai.Client(api_key=gAPI)
@@ -841,6 +862,7 @@ def model1(user_input):
     if not user_input:
         return "I didn't receive any input."
 
+    # user_input = aiInputProcessor(user_input.strip())
     user_input = user_input.strip()
 
     if len(user_input) > 0 and user_input[0] in ['0','1','2'] and len(user_input.strip()) != 1:
@@ -852,11 +874,13 @@ def model1(user_input):
 
     if ans not in ["Sorry...", "Could you rephrase?", "I can't do that on the web."] and (len(user_input) == 0 or user_input[0] not in ['0','1','2']):
         inst_manager(user_input)
-
+    
     if ans in ["Sorry...", "Could you rephrase?", "I can't do that on the web."]:
             # here the shit happens 14 Aug 2026.
+            inst_manager(user_input)
             return aiOutput(user_input)
 
+    # return user_input + " -> " + (ans+'\n')*repeat if ans else "I'm Speachless..."
     return (ans+'\n')*repeat if ans else "I'm Speachless..."
 
 # =========================
