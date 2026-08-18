@@ -16,7 +16,7 @@ from datetime import date
 from google import genai
 
 
-gAPI = ""
+gAPI = "---Gemini-API---"
 
 
 now = datetime.datetime.now()
