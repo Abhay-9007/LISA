@@ -17,10 +17,10 @@
 16. Money manager.                              -
 17. better version of monolog.                  -
 18. Use JSON file for Reminders.                -
-19. Ability to give Notificatons. {with time}
+19. Ability to give Notificatons. {with time}   -
 20. Alarm and + an GUI better one...
 21. Try coding a little version of it for an app in car.
-22. integrete with Ai
+22. integrete with Ai                           -
 23. Update timetable.
 -> for improvement there should be a seperate page to manage my money manager and monolog feature.
     as also it will contribute in my other projects in Web D.
