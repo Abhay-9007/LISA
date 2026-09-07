@@ -22,6 +22,7 @@
 21. Try coding a little version of it for an app in car.
 22. integrete with Ai                           -
 23. Update timetable.
+24. Use this API in a React Frontend.
 -> for improvement there should be a seperate page to manage my money manager and monolog feature.
     as also it will contribute in my other projects in Web D.
 '''
@@ -36,7 +37,6 @@
 6. take it to production.
 7. work on it....
 
-integrate AI in it
 make it public or build it for multiple users
 add some of my commands {in theory on site} to assist users.
 wtite code to fill out the Timetable list,
